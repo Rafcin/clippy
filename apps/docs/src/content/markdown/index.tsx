@@ -3,9 +3,9 @@ import ReactMarkdown from "react-markdown";
 import { ReactMarkdownOptions } from "react-markdown/lib/react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
-import { code } from "@/styles/code";
 import { Box, Button } from "@mui/material";
 import { FiCopy } from "react-icons/fi";
+import { code } from "@/styles/markdown";
 
 const getMarkdownSyntaxIdentifier = (className: any) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -74,7 +74,7 @@ const Markdown: React.FC<MarkdownProps> = ({ children }) => {
 
                     <SyntaxHighlighter
                       children={String(children).replace(/\n$/, "")}
-                      // @ts-ignore
+                      //@ts-ignore
                       style={code}
                       language={match[1]}
                       PreTag="div"

@@ -14,32 +14,21 @@ export default async function handler(
   if (!question) {
     return res.status(400).json({ message: "No question in the request" });
   }
+
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll("\n", " ");
 
   /* create vectorstore*/
   const vectorStore = await SupabaseVectorStore.fromExistingIndex(
-    supabaseClient,
-    new OpenAIEmbeddings()
+    new OpenAIEmbeddings(),
+    {
+      client: supabaseClient,
+    }
   );
-
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache, no-transform",
-    Connection: "keep-alive",
-  });
-
-  const sendData = (data: string) => {
-    res.write(`data: ${data}\n\n`);
-  };
-
-  sendData(JSON.stringify({ data: "" }));
 
   const model = openai;
   // create the chain
-  const chain = makeChain(vectorStore, (token: string) => {
-    sendData(JSON.stringify({ data: token }));
-  });
+  const chain = makeChain(vectorStore, (token: string) => {});
 
   try {
     //Ask a question
@@ -49,10 +38,13 @@ export default async function handler(
     });
 
     console.log("response", response);
+
+    // send the response back to the client
+    res.status(200).send(JSON.stringify(response));
   } catch (error) {
     console.log("error", error);
-  } finally {
-    sendData("[DONE]");
-    res.end();
+
+    // send a generic error response to the client
+    res.status(500).json({ message: "An error occurred" });
   }
 }

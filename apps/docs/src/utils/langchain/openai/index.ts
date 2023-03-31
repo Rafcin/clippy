@@ -1,3 +1,4 @@
+import { OpenAIEmbeddings } from "langchain/embeddings";
 import { OpenAI } from "langchain/llms";
 
 if (!process.env.OPENAI_API_KEY) {
@@ -11,9 +12,6 @@ export const openai = new OpenAI({
 export const openaiStream = new OpenAI({
   temperature: 0,
   streaming: true,
-  callbackManager: {
-    handleNewToken(token) {
-      console.log(token);
-    },
-  },
 });
+
+export const openaiEmbeddings = new OpenAIEmbeddings();
