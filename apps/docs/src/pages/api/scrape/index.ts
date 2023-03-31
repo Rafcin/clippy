@@ -42,6 +42,12 @@ export default async function handler(
       rawDocs = await scraper.loadFromFiles(filePaths, fileType);
     }
 
+    console.log("Raw docs:", rawDocs);
+
+    if (rawDocs.length === 0) {
+      throw new Error("Failed to extract data from any of the sources");
+    }
+
     const docs = await splitDocsIntoChunks(rawDocs);
 
     console.log("Chunks:", docs);

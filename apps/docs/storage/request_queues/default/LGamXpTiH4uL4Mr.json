@@ -1,9 +1,0 @@
-{
-	"id": "LGamXpTiH4uL4Mr",
-	"json": "{\"id\":\"LGamXpTiH4uL4Mr\",\"url\":\"https://mui.com/material-ui/react-button/\",\"loadedUrl\":\"https://mui.com/material-ui/react-button/\",\"uniqueKey\":\"https://mui.com/material-ui/react-button\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-03-30T02:27:18.822Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://mui.com/material-ui/react-button",
-	"url": "https://mui.com/material-ui/react-button/"
-}

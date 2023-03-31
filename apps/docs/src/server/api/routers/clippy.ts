@@ -14,7 +14,7 @@ export const clippyRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return await axios
         .post(
-          `${getBaseUrl()}/api/clippy/query`,
+          `${getBaseUrl()}/api/clippy`,
           { question: input.question, history: input.history },
           {
             headers: {

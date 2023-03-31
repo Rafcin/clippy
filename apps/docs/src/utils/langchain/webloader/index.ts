@@ -9,26 +9,78 @@ import {
 } from "langchain/document_loaders";
 import { Document } from "langchain/document";
 //import { Page, Browser } from "puppeteer";
-import { CheerioWebBaseLoader } from "langchain/document_loaders";
+import { CheerioCrawler, log, LogLevel, PuppeteerCrawler } from "crawlee";
 
 class Scraper {
   constructor() {}
 
+  async extractDocuments(urls: string[]): Promise<Document[]> {
+    const documents: Document[] = [];
+
+    const cheerioCrawler = new CheerioCrawler({
+      minConcurrency: 10,
+      maxConcurrency: 50,
+      maxRequestRetries: 1,
+      requestHandlerTimeoutSecs: 30,
+      maxRequestsPerCrawl: 10,
+      async requestHandler({ request, $ }) {
+        const pageTitle = $("title").text();
+        const pageContent = $("body").text();
+
+        if (!pageContent) {
+          throw new Error("Failed to extract data from page using Cheerio");
+        }
+
+        const doc = new Document({
+          pageContent,
+          metadata: { url: request.url, pageTitle, crawler: "cheerio" },
+        });
+
+        documents.push(doc);
+      },
+    });
+
+    const puppeteerCrawler = new PuppeteerCrawler({
+      maxConcurrency: 10,
+      maxRequestRetries: 1,
+      requestHandlerTimeoutSecs: 30,
+      maxRequestsPerCrawl: 10,
+      async requestHandler({ page, request }) {
+        const pageTitle = await page.title();
+        const pageContent = await page.content();
+
+        if (!pageContent) {
+          throw new Error("Failed to extract data from page using Puppeteer");
+        }
+
+        const doc = new Document({
+          pageContent,
+          metadata: { url: request.url, pageTitle, crawler: "puppeteer" },
+        });
+
+        documents.push(doc);
+      },
+    });
+
+    // Split the URLs into two arrays to be processed by each crawler
+    const urls1 = urls.slice(0, urls.length / 2);
+    const urls2 = urls.slice(urls.length / 2);
+
+    // Run the crawlers in parallel
+    await Promise.all([cheerioCrawler.run(urls1), puppeteerCrawler.run(urls2)]);
+
+    console.log("Extracted Documents:", documents);
+    return documents;
+  }
+
   async loadFromURLs(urls: string[]): Promise<Document[]> {
     try {
-      const documents: Document[] = [];
-
-      for (const url of urls) {
-        const loader = new CheerioWebBaseLoader(url);
-        const content = await loader.load();
-        console.log("Content:", content); // Add this line to log the content
-        documents.push(...content);
-      }
-      console.log("Data extracted from urls");
+      const documents = await this.extractDocuments(urls);
+      console.log("Data extracted from URLs");
       return documents;
     } catch (error) {
       console.error("Error while processing documents:", error);
-      return [];
+      throw error;
     }
   }
 
@@ -61,22 +113,6 @@ class Scraper {
           throw new Error("Unsupported file type");
       }
 
-      const content = await loader.load();
-      documents.push(...content);
-    }
-
-    return documents;
-  }
-
-  async loadFromGithubURLs(urls: string[]): Promise<Document[]> {
-    const documents: Document[] = [];
-
-    for (const url of urls) {
-      const loader = new GithubRepoLoader(url, {
-        branch: "main",
-        recursive: false,
-        unknown: "warn",
-      });
       const content = await loader.load();
       documents.push(...content);
     }
