@@ -1,10 +1,10 @@
-import { openaiEmbeddings } from "@/utils/langchain/openai";
-import { supabaseClient } from "@/utils/langchain/supabase";
-import Scraper from "@/utils/langchain/webloader";
+import { NextApiRequest, NextApiResponse } from "next";
 import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { SupabaseVectorStore } from "langchain/vectorstores";
-import { NextApiRequest, NextApiResponse } from "next";
+import { openaiEmbeddings } from "@/utils/langchain/openai";
+import { supabaseClient } from "@/utils/langchain/supabase";
+import Scraper from "@/utils/scraper";
 
 async function splitDocsIntoChunks(docs: Document[]): Promise<Document[]> {
   const splitter = new RecursiveCharacterTextSplitter({
@@ -24,22 +24,27 @@ export default async function handler(
     res.status(405).end("Method Not Allowed");
     return;
   }
-
+  console.log("Request body:", req.body, req.body.urls);
   try {
-    const urls = req.body.urls; // The list of URLs to scrape
-    const filePaths = req.body.filePaths; // The list of file paths to load
-    const fileType = req.body.fileType; // The type of files to load
+    const urls = req.body.urls;
+    console.log("URLs:", urls);
 
+    // Check if urls is an array and not empty
+    if (!Array.isArray(urls) || urls.length === 0) {
+      console.log("No valid URLs provided");
+      res.status(400).json({ error: "No valid URLs provided" });
+      return;
+    }
+
+    console.log("Created Scraper");
     const scraper = new Scraper();
 
     let rawDocs: Document[] = [];
 
     if (urls) {
+      console.log("URLs found, loading loadFromURLs");
       rawDocs = await scraper.loadFromURLs(urls);
-    }
-
-    if (filePaths) {
-      rawDocs = await scraper.loadFromFiles(filePaths, fileType);
+      console.log("Loaded documents from URLs:", rawDocs);
     }
 
     console.log("Raw docs:", rawDocs);
@@ -50,15 +55,13 @@ export default async function handler(
 
     const docs = await splitDocsIntoChunks(rawDocs);
 
-    console.log("Chunks:", docs);
+    // await SupabaseVectorStore.fromDocuments(docs, openaiEmbeddings, {
+    //   client: supabaseClient,
+    //   tableName: "documents",
+    //   queryName: "match_documents",
+    // });
 
-    await SupabaseVectorStore.fromDocuments(docs, openaiEmbeddings, {
-      client: supabaseClient,
-      tableName: "documents",
-      queryName: "match_documents",
-    });
-
-    res.status(200).json({ message: "Documents processed successfully" });
+    res.status(200).json(docs);
   } catch (error) {
     console.error("Error while processing documents:", error);
     res

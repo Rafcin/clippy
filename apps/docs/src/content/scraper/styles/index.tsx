@@ -1,8 +1,8 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 
-export const ChatContainer = styled("div", {
-  name: "MuiChatContainer",
+export const ScraperContainer = styled("div", {
+  name: "MuiScraperContainer",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(() => [
@@ -15,8 +15,8 @@ export const ChatContainer = styled("div", {
   },
 ]);
 
-export const ChatMain = styled("main", {
-  name: "MuiChatMain",
+export const ScraperMain = styled("main", {
+  name: "MuiScraperMain",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(() => [
@@ -31,8 +31,8 @@ export const ChatMain = styled("main", {
   },
 ]);
 
-export const ChatBody = styled("div", {
-  name: "MuiChatBody",
+export const ScraperBody = styled("div", {
+  name: "MuiScraperBody",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(() => [
@@ -49,8 +49,8 @@ export const ChatBody = styled("div", {
   },
 ]);
 
-export const ChatTextarea = styled("textarea", {
-  name: "MuiChatTextarea",
+export const ScraperTextarea = styled("textarea", {
+  name: "MuiScraperTextarea",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(() => [
@@ -75,8 +75,8 @@ export const ChatTextarea = styled("textarea", {
   },
 ]);
 
-export const ChatButton = styled(Button, {
-  name: "MuiChatButton",
+export const ScraperButton = styled(Button, {
+  name: "MuiScraperButton",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(() => [

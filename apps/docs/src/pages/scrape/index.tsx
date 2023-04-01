@@ -1,4 +1,4 @@
-import UrlExtractor from "@/content/urlextractor";
+import Scraper from "@/content/scraper";
 import { Box } from "@mui/material";
 import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 import { GetStaticProps, InferGetStaticPropsType } from "next";
@@ -35,7 +35,7 @@ const Scrape: React.FC<
         },
       })}
     >
-      <UrlExtractor />
+      <Scraper />
     </Box>
   );
 };

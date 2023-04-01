@@ -3,13 +3,13 @@ import axios from "axios";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-export const embedsRouter = createTRPCRouter({
-  create: publicProcedure
+export const glimpseRouter = createTRPCRouter({
+  web: publicProcedure
     .input(z.object({ urls: z.array(z.string()) }))
     .mutation(async ({ input }) => {
       return await axios
         .post(
-          `${getBaseUrl()}/api/embeds/create`,
+          `${getBaseUrl()}/api/glimpse/web`,
           { urls: input.urls },
           {
             headers: {

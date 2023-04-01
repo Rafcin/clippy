@@ -1,9 +1,0 @@
-{
-	"id": "wsYWndBk9bxsSNX",
-	"json": "{\"id\":\"wsYWndBk9bxsSNX\",\"url\":\"https://trpc.io/docs/quickstart\",\"loadedUrl\":\"https://trpc.io/docs/quickstart\",\"uniqueKey\":\"https://trpc.io/docs/quickstart\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-03-31T09:07:23.547Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://trpc.io/docs/quickstart",
-	"url": "https://trpc.io/docs/quickstart"
-}

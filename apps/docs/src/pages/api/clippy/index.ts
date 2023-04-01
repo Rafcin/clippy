@@ -1,9 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { OpenAIEmbeddings } from "langchain/embeddings";
-import { SupabaseVectorStore } from "langchain/vectorstores";
 import { makeChain } from "@/utils/langchain/makechain";
 import { supabaseClient } from "@/utils/langchain/supabase";
-import { openai } from "@/utils/langchain/openai";
+import { OpenAIEmbeddings } from "langchain/embeddings";
+import { SupabaseVectorStore } from "langchain/vectorstores";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,12 +25,13 @@ export default async function handler(
     }
   );
 
-  const model = openai;
-  // create the chain
-  const chain = makeChain(vectorStore, (token: string) => {});
+  const retriever = vectorStore.asRetriever();
+
+  const chain = makeChain(retriever);
 
   try {
     //Ask a question
+    console.log("History", history);
     const response = await chain.call({
       question: sanitizedQuestion,
       chat_history: history || [],

@@ -1,0 +1,9 @@
+{
+	"id": "uot5zRZ31rz0SpV",
+	"json": "{\"id\":\"uot5zRZ31rz0SpV\",\"url\":\"https://platform.openai.com/docs/introduction\",\"loadedUrl\":\"https://platform.openai.com/docs/introduction\",\"uniqueKey\":\"https://platform.openai.com/docs/introduction\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-04-01T06:38:04.513Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://platform.openai.com/docs/introduction",
+	"url": "https://platform.openai.com/docs/introduction"
+}

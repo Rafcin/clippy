@@ -1,9 +1,0 @@
-{
-	"id": "NRbakBPyoakwFlu",
-	"json": "{\"id\":\"NRbakBPyoakwFlu\",\"url\":\"https://docs.amplify.aws/cli/custom/cdk/\",\"loadedUrl\":\"https://docs.amplify.aws/cli/custom/cdk/\",\"uniqueKey\":\"https://docs.amplify.aws/cli/custom/cdk\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-03-31T07:58:21.622Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://docs.amplify.aws/cli/custom/cdk",
-	"url": "https://docs.amplify.aws/cli/custom/cdk/"
-}
