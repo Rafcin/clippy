@@ -27,6 +27,7 @@ export default async function handler(
   console.log("Request body:", req.body, req.body.urls);
   try {
     const urls = req.body.urls;
+    const debug = req.body.debug ?? false;
     console.log("URLs:", urls);
 
     // Check if urls is an array and not empty
@@ -55,11 +56,13 @@ export default async function handler(
 
     const docs = await splitDocsIntoChunks(rawDocs);
 
-    // await SupabaseVectorStore.fromDocuments(docs, openaiEmbeddings, {
-    //   client: supabaseClient,
-    //   tableName: "documents",
-    //   queryName: "match_documents",
-    // });
+    if (debug === false) {
+      await SupabaseVectorStore.fromDocuments(docs, openaiEmbeddings, {
+        client: supabaseClient,
+        tableName: "documents",
+        queryName: "match_documents",
+      });
+    }
 
     res.status(200).json(docs);
   } catch (error) {

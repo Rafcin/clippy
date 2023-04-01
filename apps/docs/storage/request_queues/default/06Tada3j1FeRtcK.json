@@ -1,0 +1,9 @@
+{
+	"id": "06Tada3j1FeRtcK",
+	"json": "{\"id\":\"06Tada3j1FeRtcK\",\"url\":\"https://github.com/Rafcin/clippy/blob/exp/apps/docs/src/pages/api/scrape/index.ts\",\"loadedUrl\":\"https://github.com/Rafcin/clippy/blob/exp/apps/docs/src/pages/api/scrape/index.ts\",\"uniqueKey\":\"https://github.com/Rafcin/clippy/blob/exp/apps/docs/src/pages/api/scrape/index.ts\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-04-01T07:26:11.197Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://github.com/Rafcin/clippy/blob/exp/apps/docs/src/pages/api/scrape/index.ts",
+	"url": "https://github.com/Rafcin/clippy/blob/exp/apps/docs/src/pages/api/scrape/index.ts"
+}

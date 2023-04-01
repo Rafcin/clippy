@@ -1,0 +1,9 @@
+{
+	"id": "nYdd6wm8yGtYHJe",
+	"json": "{\"id\":\"nYdd6wm8yGtYHJe\",\"url\":\"https://docs.amplify.aws/cli/graphql/overview/\",\"loadedUrl\":\"https://docs.amplify.aws/cli/graphql/overview/\",\"uniqueKey\":\"https://docs.amplify.aws/cli/graphql/overview\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-04-01T07:17:15.095Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://docs.amplify.aws/cli/graphql/overview",
+	"url": "https://docs.amplify.aws/cli/graphql/overview/"
+}

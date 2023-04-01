@@ -1,180 +1,7 @@
 {
-  "usableSessionsCount": 9,
+  "usableSessionsCount": 14,
   "retiredSessionsCount": 0,
   "sessions": [
-    {
-      "id": "session_1VYwsdN1kF",
-      "cookieJar": {
-        "version": "tough-cookie@4.1.2",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "enableLooseMode": false,
-        "allowSpecialUseDomain": true,
-        "prefixSecurity": "silent",
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2023-04-01T07:25:25.969Z",
-      "createdAt": "2023-04-01T06:35:25.969Z",
-      "usageCount": 0,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_5ogZQ9MSrs",
-      "cookieJar": {
-        "version": "tough-cookie@4.1.2",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "enableLooseMode": false,
-        "allowSpecialUseDomain": true,
-        "prefixSecurity": "silent",
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2023-04-01T07:25:25.973Z",
-      "createdAt": "2023-04-01T06:35:25.973Z",
-      "usageCount": 2,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_yCDbphX4RG",
-      "cookieJar": {
-        "version": "tough-cookie@4.1.2",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "enableLooseMode": false,
-        "allowSpecialUseDomain": true,
-        "prefixSecurity": "silent",
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2023-04-01T07:28:03.506Z",
-      "createdAt": "2023-04-01T06:38:03.506Z",
-      "usageCount": 0,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_gcKDpvrKXl",
-      "cookieJar": {
-        "version": "tough-cookie@4.1.2",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "enableLooseMode": false,
-        "allowSpecialUseDomain": true,
-        "prefixSecurity": "silent",
-        "cookies": [
-          {
-            "key": "_gat",
-            "value": "1",
-            "expires": "2023-04-01T06:39:04.000Z",
-            "domain": "openai.com",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.494Z",
-            "lastAccessed": "2023-04-01T06:38:04.494Z"
-          },
-          {
-            "key": "_ga",
-            "value": "GA1.2.1981031216.1680331084",
-            "expires": "2024-05-05T06:38:04.454Z",
-            "domain": "openai.com",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.500Z",
-            "lastAccessed": "2023-04-01T06:38:04.500Z"
-          },
-          {
-            "key": "_gid",
-            "value": "GA1.2.822584190.1680331084",
-            "expires": "2023-04-02T06:38:04.000Z",
-            "domain": "openai.com",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.502Z",
-            "lastAccessed": "2023-04-01T06:38:04.502Z"
-          },
-          {
-            "key": "__cf_bm",
-            "value": "0sy.VInSNTzgiC0oxQqHLuQgG2.j0PHFmJNEKt49Ahw-1680331084-0-ASnxSiX1mvtiiBJepelv5On9cn7txtiKHMvikjw/7/LCrjKKygGsmUVy/8tHsrArLDDCWzFq/21gVXVIevECif0=",
-            "expires": "2023-04-01T07:08:04.102Z",
-            "domain": "openai.com",
-            "path": "/",
-            "secure": true,
-            "httpOnly": true,
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.503Z",
-            "lastAccessed": "2023-04-01T06:38:04.503Z"
-          },
-          {
-            "key": "_gat",
-            "value": "1",
-            "expires": "2023-04-01T06:39:04.000Z",
-            "domain": "trpc.io",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.772Z",
-            "lastAccessed": "2023-04-01T06:38:04.772Z"
-          },
-          {
-            "key": "_gid",
-            "value": "GA1.2.945360768.1680331084",
-            "expires": "2023-04-02T06:38:04.000Z",
-            "domain": "trpc.io",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.774Z",
-            "lastAccessed": "2023-04-01T06:38:04.774Z"
-          },
-          {
-            "key": "_ga",
-            "value": "GA1.2.278073269.1680331084",
-            "expires": "2024-05-05T06:38:04.029Z",
-            "domain": "trpc.io",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2023-04-01T06:38:04.776Z",
-            "lastAccessed": "2023-04-01T06:38:04.776Z"
-          }
-        ]
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2023-04-01T07:28:03.509Z",
-      "createdAt": "2023-04-01T06:38:03.509Z",
-      "usageCount": 4,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_1gNhhaVIXE",
-      "cookieJar": {
-        "version": "tough-cookie@4.1.2",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "enableLooseMode": false,
-        "allowSpecialUseDomain": true,
-        "prefixSecurity": "silent",
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2023-04-01T07:28:03.514Z",
-      "createdAt": "2023-04-01T06:38:03.514Z",
-      "usageCount": 0,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
     {
       "id": "session_rzUw072KfN",
       "cookieJar": {
@@ -304,6 +131,387 @@
       "errorScoreDecrement": 0.5,
       "expiresAt": "2023-04-01T08:02:47.406Z",
       "createdAt": "2023-04-01T07:12:47.406Z",
+      "usageCount": 2,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_PFZnAaZPTS",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:07:13.749Z",
+      "createdAt": "2023-04-01T07:17:13.749Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_7UT82qkNrG",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": [
+          {
+            "key": "AMCV_7742037254C95E840A4C98A6%40AdobeOrg",
+            "value": "1585540135%7CMCIDTS%7C19449%7CMCMID%7C30049429537283584033775778425813352964%7CMCAAMLH-1680938234%7C9%7CMCAAMB-1680938234%7C6G1ynYcLPuiQxYZrsz_pkqfLG9yMXBpb2zX5dvJdYQJzPXImdj0y%7CMCOPTOUT-1680340634s%7CNONE%7CMCAID%7CNONE%7CMCSYNCSOP%7C411-19456%7CvVersion%7C4.4.0",
+            "expires": "2024-04-01T07:17:14.000Z",
+            "domain": "amplify.aws",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:17:14.926Z",
+            "lastAccessed": "2023-04-01T07:17:14.926Z"
+          },
+          {
+            "key": "AMCVS_7742037254C95E840A4C98A6%40AdobeOrg",
+            "value": "1",
+            "expires": "2023-04-01T08:07:14.926Z",
+            "domain": "amplify.aws",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:17:14.927Z",
+            "lastAccessed": "2023-04-01T07:17:14.927Z"
+          },
+          {
+            "key": "s_cc",
+            "value": "true",
+            "expires": "2023-04-01T08:07:14.926Z",
+            "domain": "amplify.aws",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:17:14.928Z",
+            "lastAccessed": "2023-04-01T07:17:14.928Z"
+          },
+          {
+            "key": "awsccc",
+            "value": "eyJlIjoxLCJwIjoxLCJmIjoxLCJhIjoxLCJpIjoiNmJmYmQ2MGMtYWY4ZC00YjE0LThiNWYtMDM4MGM5NDI3MzllIiwidiI6IjEifQ==",
+            "expires": "2023-04-02T07:17:14.423Z",
+            "domain": "amplify.aws",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2023-04-01T07:17:14.928Z",
+            "lastAccessed": "2023-04-01T07:17:14.928Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:07:13.751Z",
+      "createdAt": "2023-04-01T07:17:13.751Z",
+      "usageCount": 2,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_6OFJ0b65mP",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:14:19.232Z",
+      "createdAt": "2023-04-01T07:24:19.232Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_Li3KSDjWWO",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": [
+          {
+            "key": "__hssc",
+            "value": "7591405.1.1680333860824",
+            "expires": "2023-04-01T07:54:20.000Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.831Z",
+            "lastAccessed": "2023-04-01T07:24:20.831Z"
+          },
+          {
+            "key": "__hssrc",
+            "value": "1",
+            "expires": "2023-04-01T08:14:20.831Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.833Z",
+            "lastAccessed": "2023-04-01T07:24:20.833Z"
+          },
+          {
+            "key": "_ga_4JXVNW2SQ7",
+            "value": "GS1.1.1680333860.1.0.1680333860.0.0.0",
+            "expires": "2024-05-05T07:24:20.168Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.833Z",
+            "lastAccessed": "2023-04-01T07:24:20.833Z"
+          },
+          {
+            "key": "hubspotutk",
+            "value": "b358699fcd4696db1879c8b732e9dc34",
+            "expires": "2023-09-28T07:24:20.000Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.834Z",
+            "lastAccessed": "2023-04-01T07:24:20.834Z"
+          },
+          {
+            "key": "__hstc",
+            "value": "7591405.b358699fcd4696db1879c8b732e9dc34.1680333860824.1680333860824.1680333860824.1",
+            "expires": "2023-09-28T07:24:20.000Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.834Z",
+            "lastAccessed": "2023-04-01T07:24:20.834Z"
+          },
+          {
+            "key": "_gcl_au",
+            "value": "1.1.2012641216.1680333861",
+            "expires": "2023-06-30T07:24:20.000Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.835Z",
+            "lastAccessed": "2023-04-01T07:24:20.835Z"
+          },
+          {
+            "key": "_ga",
+            "value": "GA1.1.885796873.1680333860",
+            "expires": "2024-05-05T07:24:20.169Z",
+            "domain": "crawlee.dev",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:24:20.836Z",
+            "lastAccessed": "2023-04-01T07:24:20.836Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:14:19.234Z",
+      "createdAt": "2023-04-01T07:24:19.234Z",
+      "usageCount": 2,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_F8pv1e5Tjw",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:16:10.124Z",
+      "createdAt": "2023-04-01T07:26:10.124Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_SH9ixn3bfL",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": [
+          {
+            "key": "preferred_color_mode",
+            "value": "dark",
+            "expires": "2023-04-01T08:16:11.001Z",
+            "domain": "github.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2023-04-01T07:26:11.001Z",
+            "lastAccessed": "2023-04-01T07:26:11.001Z"
+          },
+          {
+            "key": "logged_in",
+            "value": "no",
+            "expires": "2024-04-01T07:26:10.681Z",
+            "domain": "github.com",
+            "path": "/",
+            "secure": true,
+            "httpOnly": true,
+            "hostOnly": false,
+            "creation": "2023-04-01T07:26:11.002Z",
+            "lastAccessed": "2023-04-01T07:26:11.002Z"
+          },
+          {
+            "key": "_octo",
+            "value": "GH1.1.1227439912.1680333970",
+            "expires": "2024-04-01T07:26:10.681Z",
+            "domain": "github.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2023-04-01T07:26:11.003Z",
+            "lastAccessed": "2023-04-01T07:26:11.003Z"
+          },
+          {
+            "key": "_gh_sess",
+            "value": "Tt5GagAodshrU1UEaacvOIBJLNy1YNZrW5T1SuRpuVnqFPVKYfHh5G9Nglg%2FNqGdTtYgTkia225nKuUpqlR9KwaBgX2WdTFkV2chFIYvPDasO3%2F0D30dQVwsj%2BAH55ZHhh6CezyNIcGl2nR3%2FptCVULdUFb6sHa0RE0x%2FQlfOhtexT5Yj6fMElRTinzqT1ov0abA9muf717rbfDwdHxQdV72Z7khxu6jT9Od1IC5Nz3nRHwT2p03cqhQPmyDH9JixoLE0JoGlf3JVYeT6KpZyg%3D%3D--XBwp51KjpXYPXmH8--FDZJQEOj6kmggL8ZErGnqw%3D%3D",
+            "expires": "2023-04-01T08:16:11.001Z",
+            "domain": "github.com",
+            "path": "/",
+            "secure": true,
+            "httpOnly": true,
+            "hostOnly": false,
+            "creation": "2023-04-01T07:26:11.003Z",
+            "lastAccessed": "2023-04-01T07:26:11.003Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:16:10.125Z",
+      "createdAt": "2023-04-01T07:26:10.125Z",
+      "usageCount": 2,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_ZBQxYTUYiZ",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:18:28.283Z",
+      "createdAt": "2023-04-01T07:28:28.283Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_P28O0gvXSh",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:18:28.286Z",
+      "createdAt": "2023-04-01T07:28:28.286Z",
+      "usageCount": 2,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_rAaCAxA5nO",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:22:34.534Z",
+      "createdAt": "2023-04-01T07:32:34.534Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_GTyjd4hUg3",
+      "cookieJar": {
+        "version": "tough-cookie@4.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": [
+          {
+            "key": "_ga",
+            "value": "GA1.1.1890523837.1680334355",
+            "expires": "2024-05-05T07:32:35.316Z",
+            "domain": "tanstack.com",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:32:35.582Z",
+            "lastAccessed": "2023-04-01T07:32:35.582Z"
+          },
+          {
+            "key": "_ga_JMT1Z50SPS",
+            "value": "GS1.1.1680334355.1.0.1680334355.0.0.0",
+            "expires": "2024-05-05T07:32:35.315Z",
+            "domain": "tanstack.com",
+            "path": "/",
+            "hostOnly": false,
+            "creation": "2023-04-01T07:32:35.583Z",
+            "lastAccessed": "2023-04-01T07:32:35.583Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2023-04-01T08:22:34.536Z",
+      "createdAt": "2023-04-01T07:32:34.536Z",
       "usageCount": 2,
       "maxUsageCount": 50,
       "errorScore": 0

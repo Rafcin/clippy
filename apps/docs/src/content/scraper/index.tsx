@@ -8,12 +8,13 @@ import { UrlPreview } from "../preview";
 import { ScraperContainer, ScraperMain, ScraperTextarea } from "./styles";
 
 interface PreviewData {
-  screenshot: string;
-  websiteName: string;
-  websiteUrl: string;
-  websiteHostname: string;
-  websitePathname: string;
-  insights: string;
+  previewData: {
+    metadata: {
+      screenshot: string;
+      url: string;
+    };
+    pageContent?: any;
+  };
 }
 
 interface UrlPreviewData {
@@ -55,7 +56,7 @@ export default function Scraper() {
 
     try {
       console.log("Urls", urls);
-      const response = await glimpse.mutateAsync({ urls: urls });
+      const response = await glimpse.mutateAsync({ urls: urls, debug: true });
       setPreviewData(response);
     } catch (error) {
       console.log("error", error);
@@ -106,29 +107,31 @@ export default function Scraper() {
               </Box>
             </Box>
           </Box>
-          {previewData && (
-            <Box sx={{ width: "100%" }}>
+          {previewData &&
+            Array.isArray(previewData) &&
+            previewData.map((data) => (
               <Box sx={{ width: "100%" }}>
-                <h3>{previewData.websiteName}</h3>
-                <p>{previewData.websiteUrl}</p>
-                <img
-                  src={`data:image/png;base64,${previewData.screenshot}`}
-                  alt="Screenshot"
-                  style={{
-                    marginRight: "1rem",
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                  }}
-                />
+                <Box sx={{ width: "100%" }}>
+                  <h3>{data.metadata.title}</h3>
+                  <p>{data.metadata.url}</p>
+                  <img
+                    src={`data:image/png;base64,${data.metadata.screenshot}`}
+                    alt="Screenshot"
+                    style={{
+                      marginRight: "1rem",
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", width: "100%" }}
+                >
+                  {data && <UrlPreview previewData={data} />}
+                </Box>
               </Box>
-              <Box
-                sx={{ display: "flex", alignItems: "center", width: "100%" }}
-              >
-                {previewData && <UrlPreview previewData={previewData} />}
-              </Box>
-            </Box>
-          )}
+            ))}
         </ScraperMain>
       </ScraperContainer>
     </Box>
