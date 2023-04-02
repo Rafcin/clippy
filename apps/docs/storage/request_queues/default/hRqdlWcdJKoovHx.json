@@ -1,9 +1,0 @@
-{
-	"id": "hRqdlWcdJKoovHx",
-	"json": "{\"id\":\"hRqdlWcdJKoovHx\",\"url\":\"https://docs.amplify.aws/cli/graphql/custom-business-logic/#create-a-custom-query-or-mutation\",\"loadedUrl\":\"https://docs.amplify.aws/cli/graphql/custom-business-logic/#create-a-custom-query-or-mutation\",\"uniqueKey\":\"https://docs.amplify.aws/cli/graphql/custom-business-logic\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2023-04-01T07:12:48.903Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://docs.amplify.aws/cli/graphql/custom-business-logic",
-	"url": "https://docs.amplify.aws/cli/graphql/custom-business-logic/#create-a-custom-query-or-mutation"
-}

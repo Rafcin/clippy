@@ -121,7 +121,7 @@ export default function Chat() {
                       key={index}
                       sx={(theme: any) => ({
                         display: "flex",
-                        alignItems: "center",
+
                         width: "100%",
                         padding: "1.5rem",
                         color: theme?.vars.palette.text?.primary,
@@ -138,15 +138,22 @@ export default function Chat() {
                             }),
                       })}
                     >
-                      <Avatar
+                      <Box
                         sx={{
                           marginRight: "10px",
                         }}
-                        alt="API"
                       >
-                        {message.type === "apiMessage" ? "🤖" : "🧑"}
-                      </Avatar>
-                      <Box sx={{ display: "flex", width: "100%" }}>
+                        <Avatar alt="API">
+                          {message.type === "apiMessage" ? "🤖" : "🧑"}
+                        </Avatar>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          width: "100%",
+                          alignItems: "center",
+                        }}
+                      >
                         <Markdown children={message.message} />
                       </Box>
                     </Box>

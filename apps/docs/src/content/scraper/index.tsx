@@ -56,7 +56,7 @@ export default function Scraper() {
 
     try {
       console.log("Urls", urls);
-      const response = await glimpse.mutateAsync({ urls: urls, debug: true });
+      const response = await glimpse.mutateAsync({ urls: urls, debug: false });
       setPreviewData(response);
     } catch (error) {
       console.log("error", error);

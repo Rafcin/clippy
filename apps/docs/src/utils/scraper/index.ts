@@ -14,7 +14,7 @@ export default class Scraper {
       maxConcurrency: 50,
       maxRequestRetries: 1,
       requestHandlerTimeoutSecs: 30,
-      maxRequestsPerCrawl: 10,
+      maxRequestsPerCrawl: 30,
       async requestHandler({ page, request }) {
         try {
           const url = request.url;
