@@ -1,7 +1,6 @@
-import Scraper from "@/content/scraper";
+import { default as ChatUI } from "@/content/chat";
 import { getServerAuthSession } from "@/server/auth";
 import { Box } from "@mui/material";
-import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 export const getServerSideProps = async (
@@ -22,7 +21,7 @@ export const getServerSideProps = async (
   return { props: { session } };
 };
 
-const Scrape: React.FC<
+const Chat: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({}) => {
   return (
@@ -48,9 +47,9 @@ const Scrape: React.FC<
         },
       })}
     >
-      <Scraper />
+      <ChatUI />
     </Box>
   );
 };
 
-export default Scrape;
+export default Chat;

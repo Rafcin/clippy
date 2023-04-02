@@ -1,4 +1,3 @@
-import Chat from "@/content/chat";
 import { Box } from "@mui/material";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
@@ -32,7 +31,7 @@ const Home: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({}) => {
         },
       })}
     >
-      <Chat />
+      Hello
     </Box>
   );
 };

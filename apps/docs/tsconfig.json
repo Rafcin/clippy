@@ -17,7 +17,6 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "types": ["vidstack/globals"],
     "paths": {
       "@/*": ["src/*"],
       "@/content": ["src/content/*"],
@@ -40,8 +39,7 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs",
-    "src/content/scraper/styles"
+    "**/*.mjs"
   ],
   "exclude": ["node_modules"]
 }
