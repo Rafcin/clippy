@@ -1,11 +1,11 @@
-import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
+import "katex/dist/katex.min.css";
 import ReactMarkdown from "react-markdown";
 import { ReactMarkdownOptions } from "react-markdown/lib/react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
-import { code } from "@/styles/code";
 import { Box, Button } from "@mui/material";
 import { FiCopy } from "react-icons/fi";
+import { code } from "@/styles/markdown";
 
 const getMarkdownSyntaxIdentifier = (className: any) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -43,7 +43,12 @@ const Markdown: React.FC<MarkdownProps> = ({ children }) => {
           code({ node, inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || "");
             return (
-              <Box>
+              <Box
+                component="code"
+                sx={{
+                  marginBottom: "10px",
+                }}
+              >
                 {!inline && match ? (
                   <Box
                     sx={{
@@ -74,7 +79,7 @@ const Markdown: React.FC<MarkdownProps> = ({ children }) => {
 
                     <SyntaxHighlighter
                       children={String(children).replace(/\n$/, "")}
-                      // @ts-ignore
+                      //@ts-ignore
                       style={code}
                       language={match[1]}
                       PreTag="div"
@@ -83,47 +88,28 @@ const Markdown: React.FC<MarkdownProps> = ({ children }) => {
                   </Box>
                 ) : (
                   <Box
+                    component="span"
                     sx={{
                       borderRadius: "0.45rem",
-                      overflow: "hidden",
+                      overflowX: "auto",
+                      padding: "0.3em",
+                      paddingLeft: "0.5em",
+                      paddingRight: "0.5em",
+                      background: "black",
+                      color: "white",
+                      fontSize: "0.8rem",
                     }}
                   >
-                    <Box
-                      sx={(theme: any) => ({
-                        position: "relative",
-                        paddingBottom: "0.2rem",
-                        paddingTop: "0.2rem",
-                        paddingLeft: "1rem",
-                        paddingRight: "1rem",
-                        fontSize: "0.75rem",
-                        lineHeight: "1rem",
-                        backgroundColor:
-                          theme?.vars.palette.background?.contrastBackground,
-                        color: theme?.vars.palette.text?.contrastText,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "right",
-                      })}
-                    >
-                      {getMarkdownSyntaxIdentifier(match)}
-                      <CopyButton text={children} />
-                    </Box>
-                    <Box
-                      component="code"
-                      className={className}
-                      {...props}
-                      sx={{
-                        display: "block",
-                        overflowX: "auto",
-                        padding: "0.7em",
-                        background: "black",
-                        color: "white",
-                      }}
-                    >
-                      {children}
-                    </Box>
+                    {children}
                   </Box>
                 )}
+              </Box>
+            );
+          },
+          p({ node, className, children, ...props }) {
+            return (
+              <Box component="p" sx={{ margin: 0 }}>
+                {children}
               </Box>
             );
           },

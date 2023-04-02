@@ -1,5 +1,6 @@
-import Chat from "@/content/chat";
+import Scraper from "@/content/scraper";
 import { Box } from "@mui/material";
+import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
 export const getStaticProps: GetStaticProps<{}> = async ({}) => {
@@ -8,7 +9,9 @@ export const getStaticProps: GetStaticProps<{}> = async ({}) => {
   };
 };
 
-const Home: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({}) => {
+const Scrape: React.FC<
+  InferGetStaticPropsType<typeof getStaticProps>
+> = ({}) => {
   return (
     <Box
       sx={(theme: any) => ({
@@ -32,9 +35,9 @@ const Home: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({}) => {
         },
       })}
     >
-      <Chat />
+      <Scraper />
     </Box>
   );
 };
 
-export default Home;
+export default Scrape;

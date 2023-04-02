@@ -1,5 +1,5 @@
 import { clippyRouter } from "./routers/clippy";
-import { embedsRouter } from "./routers/embeds";
+import { glimpseRouter } from "./routers/glimpse";
 import { createTRPCRouter } from "./trpc";
 
 /**
@@ -8,8 +8,8 @@ import { createTRPCRouter } from "./trpc";
  * All routers added in /api/routers should be manually added here
  */
 export const appRouter = createTRPCRouter({
-  embeds: embedsRouter,
   clippy: clippyRouter,
+  glimpse: glimpseRouter,
 });
 
 // export type definition of API

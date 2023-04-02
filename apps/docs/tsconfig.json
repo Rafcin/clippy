@@ -40,7 +40,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
+    "**/*.mjs",
+    "src/content/scraper/styles"
   ],
   "exclude": ["node_modules"]
 }

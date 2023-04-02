@@ -1,147 +1,50 @@
-import { supabaseClient } from "@/server/supabase";
-import { OpenAIStream, OpenAIStreamPayload } from "@/utils/openai";
-import GPT3Tokenizer from "gpt3-tokenizer";
-import { Configuration } from "openai";
+import { makeChain } from "@/utils/langchain/makechain";
+import { supabaseClient } from "@/utils/langchain/supabase";
+import { OpenAIEmbeddings } from "langchain/embeddings";
+import { SupabaseVectorStore } from "langchain/vectorstores";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-
-export const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
-
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error("Missing env var from OpenAI");
-}
-
-export const config = {
-  runtime: "edge",
-};
-
-const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS
-  if (req.method === "OPTIONS") {
-    console.log("req.method ", req.method);
-    return new Response("ok", { headers: corsHeaders });
-  }
-
-  const { question } = (await req.json()) as {
-    question?: string;
-  };
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { question, history } = req.body;
 
   if (!question) {
-    return new Response("No prompt in the request", { status: 400 });
+    return res.status(400).json({ message: "No question in the request" });
   }
-
-  const query = question;
 
   // OpenAI recommends replacing newlines with spaces for best results
-  const input = query.replace(/\n/g, " ");
-  // console.log("input: ", input);
+  const sanitizedQuestion = question.trim().replaceAll("\n", " ");
 
-  const apiKey = process.env.OPENAI_API_KEY;
-
-  const embeddingResponse = await fetch(
-    "https://api.openai.com/v1/embeddings",
+  /* create vectorstore*/
+  const vectorStore = await SupabaseVectorStore.fromExistingIndex(
+    new OpenAIEmbeddings(),
     {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        input,
-        model: "text-embedding-ada-002",
-      }),
+      client: supabaseClient,
     }
   );
 
-  const embeddingData = await embeddingResponse.json();
-  const [{ embedding }] = embeddingData.data;
-  // console.log("embedding: ", embedding);
+  const retriever = vectorStore.asRetriever();
 
-  const { data: documents, error } = await supabaseClient.rpc(
-    "match_documents",
-    {
-      query_embedding: embedding,
-      //similarity_threshold: 0.1, // Choose an appropriate threshold for your data
-      //match_count: 10, // Choose the number of matches
-      match_threshold: 0.78, // Choose an appropriate threshold for your data
-      match_count: 10, // Choose the number of matches
-      min_content_length: 50,
-    }
-  );
+  const chain = makeChain(retriever);
 
-  if (error) console.error(error);
+  try {
+    //Ask a question
+    console.log("History", history);
+    const response = await chain.call({
+      question: sanitizedQuestion,
+      chat_history: history || [],
+    });
 
-  const tokenizer = new GPT3Tokenizer({ type: "gpt3" });
-  let tokenCount = 0;
-  let contextText = "";
+    console.log("response", response);
 
-  // console.log("documents: ", documents);
+    // send the response back to the client
+    res.status(200).send(JSON.stringify(response));
+  } catch (error) {
+    console.log("error", error);
 
-  // Concat matched documents
-  if (documents) {
-    for (let i = 0; i < documents.length; i++) {
-      const document = documents[i];
-      const content = document.content;
-      const url = document.url;
-      const encoded = tokenizer.encode(content);
-      tokenCount += encoded.text.length;
-
-      // Limit context to max 1500 tokens (configurable)
-      if (tokenCount > 1500) {
-        break;
-      }
-
-      contextText += `${content.trim()}\nSOURCE: ${url}\n---\n`;
-    }
+    // send a generic error response to the client
+    res.status(500).json({ message: "An error occurred" });
   }
-
-  // console.log("contextText: ", contextText);
-
-  const systemContent = `You are a helpful assistant. When given CONTEXT you answer questions using only that information,
-  and you always format your output in markdown. You include code snippets if relevant. If you are unsure and the answer
-  is not explicitly written in the CONTEXT provided, you say
-  "Sorry, I don't know how to help with that."  If the CONTEXT includes 
-  source URLs include them under a SOURCES heading at the end of your response. Always include all of the relevant source urls 
-  from the CONTEXT, but never list a URL more than once (ignore trailing forward slashes when comparing for uniqueness). Never include URLs that are not in the CONTEXT sections. Never make up URLs`;
-
-  const userMessage = `CONTEXT:
-  ${contextText}
-  
-  USER QUESTION: 
-  ${query}  
-  `;
-
-  const messages = [
-    {
-      role: "system",
-      content: systemContent,
-    },
-    {
-      role: "user",
-      content: userMessage,
-    },
-  ];
-
-  console.log("messages: ", messages);
-
-  const payload: OpenAIStreamPayload = {
-    model: "gpt-3.5-turbo-0301",
-    messages: messages,
-    temperature: 0,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 512,
-    stream: true,
-    n: 1,
-  };
-
-  const stream = await OpenAIStream(payload);
-  return new Response(stream);
-};
-
-export default handler;
+}
