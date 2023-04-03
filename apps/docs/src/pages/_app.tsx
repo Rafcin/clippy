@@ -1,15 +1,10 @@
 import { footerConfig } from "@/config/footer";
 import { Appbar } from "@/content/controls/navigation/appbar";
+import createEmotionCache from "@/styles/emotion";
 import { api } from "@/trpc/api";
 import { avoid, avoidpaths } from "@/utils/navigation";
-import {
-  Body,
-  Content,
-  Footer,
-  InlineFooter,
-  Shell,
-  ThemeProvider,
-} from "@oxygen/design-system";
+import { CacheProvider } from "@emotion/react";
+import { Body, Content, Shell, ThemeProvider } from "@oxygen/design-system";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "intersection-observer";
@@ -17,13 +12,25 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import "swiper/css";
+import { NextAppProps } from "./_document";
 
-const NextApp: AppType<{
-  session: Session | null;
-  settings?: any;
-}> = ({ Component, pageProps: { session, ...pageProps } }) => {
+const clientSideEmotionCache = createEmotionCache();
+
+const NextApp = (props: NextAppProps) => {
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps: { session, ...pageProps },
+  } = props;
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) {
+      jssStyles?.parentElement?.removeChild(jssStyles);
+    }
+  }, []);
   const router = useRouter();
   const [queryClient] = React.useState(
     () =>
@@ -36,33 +43,23 @@ const NextApp: AppType<{
       })
   );
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <Content>
-            {!avoid(router.pathname, avoidpaths) && <Appbar />}
-            <Shell>
-              <Body>
-                <Component {...pageProps} data-application="true" />
-                <ReactQueryDevtools initialIsOpen={false} />
-              </Body>
-            </Shell>
-            {!avoid(router.pathname, avoidpaths) && (
-              <InlineFooter
-                isFooterAllowedOnPage={true}
-                footerConfig={footerConfig}
-              />
-            )}
-            {!avoid(router.pathname, avoidpaths) && (
-              <Footer
-                isFooterAllowedOnPage={true}
-                footerConfig={footerConfig}
-              />
-            )}
-          </Content>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+    <CacheProvider value={emotionCache}>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <Content>
+              {!avoid(router.pathname, avoidpaths) && <Appbar />}
+              <Shell>
+                <Body>
+                  <Component {...pageProps} data-application="true" />
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </Body>
+              </Shell>
+            </Content>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </SessionProvider>
+    </CacheProvider>
   );
 };
 

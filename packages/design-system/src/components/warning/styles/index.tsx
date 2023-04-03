@@ -43,11 +43,11 @@ export const WarningSection = styled("div", {
     contain: "layout",
     color: theme?.vars.palette.text?.primary,
     background: theme?.vars.palette.background?.default,
-    border: `1px solid ${theme?.vars.palette.background?.border}`,
+    border: `1px solid ${theme?.vars.palette.inputs?.inputBorder}`,
     ...(ownerState.borderless && {
       border: "1px solid transparent",
       borderRadius: 8,
-      boxShadow: `${theme?.vars.palette.background?.border} 0px 0px 0px 1px inset`,
+      boxShadow: `${theme?.vars.palette.inputs?.inputBorder} 0px 0px 0px 1px inset`,
     }),
   },
 ]);

@@ -1,6 +1,8 @@
 import { api } from "@/trpc/api";
+import { removeDuplicateUrls } from "@/utils/scraper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, TextField } from "@mui/material";
+import { Error, Loading } from "@oxygen/design-system";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,9 +28,6 @@ const urlSchema = z.object({
 });
 
 export default function Scraper() {
-  const [previewData, setPreviewData] = useState<PreviewData | null>(null);
-  const [loading, setLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -47,22 +46,11 @@ export default function Scraper() {
       alert("Please input a URL");
       return;
     }
-
-    setLoading(true);
+    // Clear the input field
     setValue("urlInput", "");
-
     // Split the input string by spaces and store it in an array
     const urls = urlInput.split(" ").filter((url) => url.trim());
-
-    try {
-      console.log("Urls", urls);
-      const response = await glimpse.mutateAsync({ urls: urls, debug: false });
-      setPreviewData(response);
-    } catch (error) {
-      console.log("error", error);
-    } finally {
-      setLoading(false);
-    }
+    await glimpse.mutateAsync({ urls: urls, debug: true });
   }
 
   return (
@@ -91,47 +79,81 @@ export default function Scraper() {
                 }}
               >
                 <ScraperTextarea
-                  disabled={loading}
+                  disabled={glimpse.isLoading}
                   autoFocus={false}
                   rows={1}
                   maxLength={512}
                   id="urlInput"
                   placeholder={
-                    loading ? "Fetching preview..." : "Enter URL to preview..."
+                    glimpse.isLoading
+                      ? "Fetching preview..."
+                      : "Enter URL to preview..."
                   }
                   {...register("urlInput")}
                 />
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Loading..." : "Preview"}
-                </Button>
+                {glimpse.isLoading ? (
+                  <Loading />
+                ) : (
+                  <Button type="submit" disabled={glimpse.isLoading}>
+                    {glimpse.isLoading ? "Loading..." : "Preview"}
+                  </Button>
+                )}
+                {glimpse.isError && (
+                  <Box
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
+                    <Error name="Error" error={glimpse.error.message} />
+                  </Box>
+                )}
+                {glimpse.isSuccess &&
+                  Array.isArray(glimpse.data?.metadata) &&
+                  glimpse.data?.metadata.map(
+                    (data: {
+                      description: string;
+                      image: string;
+                      title: string;
+                      url: string;
+                    }) => (
+                      <Box sx={{ width: "100%" }}>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <h3>{data.title}</h3>
+                          <p>{data.url}</p>
+                          <img
+                            src={data.image}
+                            alt="Screenshot"
+                            style={{
+                              marginRight: "1rem",
+                              width: "100px",
+                              height: "100px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                          }}
+                        >
+                          {data && <UrlPreview url={data.url} />}
+                        </Box>
+                      </Box>
+                    )
+                  )}
               </Box>
             </Box>
           </Box>
-          {previewData &&
-            Array.isArray(previewData) &&
-            previewData.map((data) => (
-              <Box sx={{ width: "100%" }}>
-                <Box sx={{ width: "100%" }}>
-                  <h3>{data.metadata.title}</h3>
-                  <p>{data.metadata.url}</p>
-                  <img
-                    src={`data:image/png;base64,${data.metadata.screenshot}`}
-                    alt="Screenshot"
-                    style={{
-                      marginRight: "1rem",
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", width: "100%" }}
-                >
-                  {data && <UrlPreview previewData={data} />}
-                </Box>
-              </Box>
-            ))}
         </ScraperMain>
       </ScraperContainer>
     </Box>

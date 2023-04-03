@@ -53,25 +53,26 @@ export const ScraperTextarea = styled("textarea", {
   name: "MuiScraperTextarea",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
-})<{ theme?: any }>(() => [
+})<{ theme?: any }>(({ theme }) => [
   {
     position: "relative",
     resize: "none",
     fontSize: "1.1rem",
     padding: "1rem 2rem 1rem 2rem",
     width: "75vw",
-    borderRadius: "0.5rem",
-    border: "1px solid #d9d9e3",
-    background: "#ffffff",
-    color: "#000",
+    borderRadius: "25px",
+    border: `1px solid ${theme?.vars.palette.inputs.inputBorder}`,
+    background: "transparent",
+    color: theme?.vars.palette.text.primary,
     outline: "none",
     ":disabled": { opacity: 0.5 },
     ":focus": {
       outline: "none",
-      borderColor: "#6b7280",
-      boxShadow: "0 0 0 3px rgba(156, 163, 175, 0.5)",
+      borderColor: theme?.vars.palette.inputs.inputFocusedBorder,
+      boxShadow: `0 0 0 1.2px ${theme?.vars.palette.inputs.inputFocusedBorder}`,
     },
-    "::placeholder": { color: "#6b7280" },
+    ":invalid": { borderColor: theme?.vars.palette.error.main },
+    "::placeholder": { color: theme?.vars.palette.text.primary },
   },
 ]);
 
