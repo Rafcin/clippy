@@ -3,6 +3,22 @@ import { Document } from "langchain/document";
 import cheerio from "cheerio";
 import TurndownService from "turndown";
 
+export function removeDuplicateUrls(arr: any[]) {
+  const uniqueData = arr.reduce((acc, curr) => {
+    const {
+      metadata: { URL },
+    } = curr;
+    const index = acc.findIndex(
+      (d: { metadata: { URL: any } }) => d.metadata.URL === URL
+    );
+    if (index === -1) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
+  return uniqueData;
+}
+
 export default class Scraper {
   async loadFromURLs(urls: string[]): Promise<Document[]> {
     console.log("Loading documents from URLs:", urls);

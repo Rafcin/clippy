@@ -143,7 +143,12 @@ export default function Chat() {
                           marginRight: "10px",
                         }}
                       >
-                        <Avatar alt="API">
+                        <Avatar
+                          alt="API"
+                          sx={(theme: any) => ({
+                            backgroundColor: theme?.vars.palette.primary?.main,
+                          })}
+                        >
                           {message.type === "apiMessage" ? "🤖" : "🧑"}
                         </Avatar>
                       </Box>

@@ -5,6 +5,7 @@ import { SupabaseVectorStore } from "langchain/vectorstores";
 import { openaiEmbeddings } from "@/utils/langchain/openai";
 import { supabaseClient } from "@/utils/langchain/supabase";
 import Scraper from "@/utils/scraper";
+import cheerio from "cheerio";
 
 async function splitDocsIntoChunks(docs: Document[]): Promise<Document[]> {
   const splitter = new RecursiveCharacterTextSplitter({
@@ -13,6 +14,17 @@ async function splitDocsIntoChunks(docs: Document[]): Promise<Document[]> {
   });
 
   return await splitter.splitDocuments(docs);
+}
+
+async function getMetadataFromHtml(html: string, url: string) {
+  // Use a library like cheerio to parse the HTML and extract the metadata
+  // Here's an example implementation using cheerio:
+  const cheerio = require("cheerio");
+  const $ = cheerio.load(html);
+  const title = $("title").text();
+  const description = $('meta[name="description"]').attr("content");
+  const image = $('meta[property="og:image"]').attr("content");
+  return { title, description, image, url };
 }
 
 export default async function handler(
@@ -36,6 +48,16 @@ export default async function handler(
       res.status(400).json({ error: "No valid URLs provided" });
       return;
     }
+
+    // Fetch metadata for each URL in parallel using Promise.all
+    const metadata = await Promise.all(
+      urls.map(async (url: string) => {
+        const response = await fetch(url);
+        const html = await response.text();
+        const metadata = getMetadataFromHtml(html, url);
+        return metadata;
+      })
+    );
 
     console.log("Created Scraper");
     const scraper = new Scraper();
@@ -64,7 +86,7 @@ export default async function handler(
       });
     }
 
-    res.status(200).json(docs);
+    res.status(200).json({ docs, metadata });
   } catch (error) {
     console.error("Error while processing documents:", error);
     res

@@ -22,8 +22,6 @@ const server = z.object({
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
   SUPABASE_ANON_KEY: z.string(),
   NEXT_PUBLIC_SUPABASE_URL: z.string(),
   OPENAI_API_KEY: z.string(),
@@ -50,8 +48,6 @@ const processEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
@@ -62,16 +58,21 @@ const processEnv = {
 // --------------------------
 
 const merged = server.merge(client);
-/** @type z.infer<merged>
- *  @ts-ignore - can't type this properly in jsdoc */
-let env = process.env;
+
+/** @typedef {z.input<typeof merged>} MergedInput */
+/** @typedef {z.infer<typeof merged>} MergedOutput */
+/** @typedef {z.SafeParseReturnType<MergedInput, MergedOutput>} MergedSafeParseReturn */
+
+let env = /** @type {MergedOutput} */ (process.env);
 
 if (!!process.env.SKIP_ENV_VALIDATION == false) {
   const isServer = typeof window === "undefined";
 
-  const parsed = isServer
-    ? merged.safeParse(processEnv) // on server we can validate all env vars
-    : client.safeParse(processEnv); // on client we can only validate the ones that are exposed
+  const parsed = /** @type {MergedSafeParseReturn} */ (
+    isServer
+      ? merged.safeParse(processEnv) // on server we can validate all env vars
+      : client.safeParse(processEnv) // on client we can only validate the ones that are exposed
+  );
 
   if (parsed.success === false) {
     console.error(
@@ -81,8 +82,6 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
     throw new Error("Invalid environment variables");
   }
 
-  /** @type z.infer<merged>
-   *  @ts-ignore - can't type this properly in jsdoc */
   env = new Proxy(parsed.data, {
     get(target, prop) {
       if (typeof prop !== "string") return undefined;
@@ -94,8 +93,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
             ? "❌ Attempted to access a server-side environment variable on the client"
             : `❌ Attempted to access server-side environment variable '${prop}' on the client`
         );
-      /*  @ts-ignore - can't type this properly in jsdoc */
-      return target[prop];
+      return target[/** @type {keyof typeof target} */ (prop)];
     },
   });
 }
