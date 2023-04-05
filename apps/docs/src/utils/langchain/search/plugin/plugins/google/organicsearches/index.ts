@@ -1,10 +1,13 @@
-import type { Plugin } from "../..";
+import type { Plugin } from "../../..";
 import type { Page } from "puppeteer";
+import { EngineType } from "@/utils/langchain/search";
 
 export class OrganicSearches implements Plugin {
   name: string = "OrganicSearches";
+  engine: EngineType = "Google";
 
-  async process(page: Page): Promise<any> {
+  async process(data: { page: Page }): Promise<any> {
+    const { page } = data;
     // Click the button
     await page.click('[aria-label="About this result"]');
 
@@ -16,24 +19,13 @@ export class OrganicSearches implements Plugin {
     const searchResults = await page.evaluate(() => {
       const results = Array.from(document.querySelectorAll(".tF2Cxc"));
       return results.map((result, index) => {
-        const sitelinks = Array.from(result.querySelectorAll(".VNLkW a"));
-        const sitelinksData = sitelinks.map((link) => ({
-          title: link.textContent || "",
-          link: link.getAttribute("href") || "",
-        }));
-
-        const richSnippet = result.querySelector(".AUiS2") as HTMLElement;
+        const richSnippet = result.querySelector(
+          "#eob_3 > div > div:nth-child(1)"
+        ) as HTMLElement;
         const extensions = richSnippet
-          ? Array.from(richSnippet.querySelectorAll(".i4vd5e span")).map(
+          ? Array.from(richSnippet.querySelectorAll("div")).map(
               (s) => s.textContent?.trim() ?? ""
             )
-          : [];
-
-        const aboutThisResult = result.querySelector(".QmUzgb") as HTMLElement;
-        const sourceInfoLink = aboutThisResult?.querySelector("a");
-        const sourceIcon = aboutThisResult?.querySelector("img");
-        const sourceTexts = aboutThisResult
-          ? Array.from(aboutThisResult.querySelectorAll(".R8x7c"))
           : [];
 
         const snippetContainer = result.querySelector(".VwiC3b");
@@ -41,8 +33,9 @@ export class OrganicSearches implements Plugin {
           snippetContainer?.querySelector(".MUxGbd.wuQ4Ob.WZ8Tjf")
             ?.textContent || "";
         const description =
-          snippetContainer?.querySelector(".MUxGbd:not(.wuQ4Ob)")
-            ?.textContent || "";
+          snippetContainer?.querySelector(
+            ".VwiC3b.yXK7lf.MUxGbd.yDYNvb.lyLwlc > span:nth-child(2)"
+          )?.textContent || "";
 
         const relatedLinksContainer = result.querySelector(
           ".Z26q7c.UK95Uc"
@@ -95,43 +88,12 @@ export class OrganicSearches implements Plugin {
             date,
             description,
           },
-          sitelinks: {
-            inline: sitelinksData,
-          },
           rich_snippet: {
             bottom: {
               extensions,
               // You can add specific detected_extensions if needed
             },
           },
-          about_this_result: aboutThisResult
-            ? {
-                source: {
-                  description: sourceTexts[0]?.textContent || "",
-                  source_info_link: sourceInfoLink?.getAttribute("href") || "",
-                  security:
-                    sourceIcon?.getAttribute("alt") === "Secure"
-                      ? "secure"
-                      : "",
-                  icon: sourceIcon?.getAttribute("src") || "",
-                },
-                keywords: sourceTexts
-                  .slice(1)
-                  .map((s) => s.textContent?.trim() ?? ""),
-              }
-            : null,
-          about_page_link:
-            result
-              .querySelector(".action-menu a:nth-child(1)")
-              ?.getAttribute("href") || "",
-          cached_page_link:
-            result
-              .querySelector(".action-menu a:nth-child(2)")
-              ?.getAttribute("href") || "",
-          related_pages_link:
-            result
-              .querySelector(".action-menu a:nth-child(3)")
-              ?.getAttribute("href") || "",
           related_links: relatedLinks,
           metadata: metadata,
           // Add about text and site security information

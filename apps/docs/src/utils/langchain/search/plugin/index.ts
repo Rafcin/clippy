@@ -1,4 +1,7 @@
+import { EngineType } from "..";
+
 export interface Plugin {
   name: string;
-  process: (data: any) => any;
+  engine: EngineType;
+  process: (data: { page: any; [key: string]: any }) => any;
 }
