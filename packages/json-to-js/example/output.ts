@@ -1,4 +1,4 @@
-export default {
+export const example = {
   "Name": "Example",
   "User": {
     "Name": "John Doe",

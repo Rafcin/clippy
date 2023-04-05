@@ -26,92 +26,35 @@ export interface OxygenTheme {
 }
 
 export interface OxygenBaseline {
-  "#root": OxygenRoot;
   html: OxygenHTML;
   "*, *:before, *:after": OxygenBeforeAfter;
   body: OxygenBody;
-  "[lang='ko'] body": OxygenLangKoOxygenBody;
-  h1: OxygenH1;
-  h2: OxygenH1;
-  h3: OxygenH1;
-  h4: OxygenH1;
-  h5: OxygenH1;
-  h6: OxygenH1;
-  "h-margin": OxygenHMargin;
-  "h:first-of-type": OxygenHFirstOfType;
-  'button, html input[type="button"], input[type="reset"], input[type="submit"]': OxygenButtonOxygenOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit;
+  '[lang="ko"] body': OxygenLangKoOxygenBody;
+  'button, html input[type="button"], input[type="reset"], input[type="submit"]': OxygenButtonOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit;
   "input, textarea, select, button, a": OxygenInputOxygenTextareaSelectButtonA;
   "a, a:hover, a:focus": OxygenAAHoverAFocus;
-  'html input[type="button"]': OxygenOxygenHTMLInputTypeButton;
-  'input[type="reset"]': OxygenOxygenHTMLInputTypeButton;
-  'input[type="submit"]': OxygenOxygenHTMLInputTypeButton;
+  "h1, h2, h3, h4, h5, h6": OxygenH1H2H3H4H5H6;
+  "h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child": OxygenH1FirstChildH2FirstChildH3FirstChildH4FirstChildH5FirstChildH6FirstChild;
   '[tabindex="-1"]:focus': OxygenTabindex1Focus;
   ".screen-reader-only": OxygenScreenReaderOnly;
-  ".screen-reader-only-focusable-actions": OxygenOxygenScreenReaderOnlyFocusableOxygenActions;
+  ".screen-reader-only-focusable:active, .screen-reader-only-focusable:focus": OxygenScreenReaderOnly;
   ".skip-to-content:focus": OxygenSkipToOxygenContentFocus;
-  ".only-light-mode": OxygenFilepondCredits;
-  ".only-dark-mode": OxygenFilepondCredits;
-  ".mode-dark .only-light-mode": OxygenFilepondCredits;
-  ".mode-dark .only-dark-mode": OxygenFilepondCredits;
-  ".slider:not([data-slider-disabled])": OxygenOxygenSliderNotDataOxygenSliderDisabled;
-  ".slider:not([data-slider-disabled]) .slider__slide": OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledOxygenSliderSlide;
-  ".slider:not([data-slider-disabled])[data-slider-reverse]": OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderReverse;
-  ".slider:not([data-slider-disabled])[data-slider-v]": OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderV;
-  "[data-slider-moves] *": OxygenDataOxygenSliderMoves;
-  "@media (min-width: 744px)": OxygenMediaMinWidth744Px;
-  ".filepond--root": FilepondOxygenRoot;
-  ".filepond--panel-root": FilepondPanelOxygenRoot;
-  ".filepond--credits": OxygenFilepondCredits;
-  "[data-rsbs-overlay]": OxygenDataRsbsOverlay;
-  ".tox-tinymce": OxygenToxTinymce;
-  ".MuiBottomNavigationOxygenAction-label": OxygenMuiBottomNavigationOxygenActionLabel;
-}
-
-export interface OxygenRoot {
-  overflow: string;
 }
 
 export interface OxygenBeforeAfter {
-  WebkitBoxSizing: string;
-  MozBoxSizing: string;
+  webkitBoxSizing: string;
+  mozBoxSizing: string;
   boxSizing: string;
-  MsFlex: string;
-}
-
-export interface OxygenMuiBottomNavigationOxygenActionLabel {
-  opacity: string;
-}
-
-export interface OxygenFilepondCredits {
-  display: string;
-}
-
-export interface FilepondPanelOxygenRoot {
-  backgroundColor: string;
-}
-
-export interface FilepondOxygenRoot {
-  color: string;
-  borderRadius: string;
-  boxShadow: string;
+  msFlex: string;
 }
 
 export interface OxygenScreenReaderOnly {
-  border: number;
+  border?: string;
   clip: string;
   height: string;
   margin: string;
   overflow: string;
-  padding: number;
-  position: string;
-  width: string;
-}
-
-export interface OxygenOxygenScreenReaderOnlyFocusableOxygenActions {
-  clip: string;
-  height: string;
-  margin: number;
-  overflow: string;
+  padding?: string;
   position: string;
   width: string;
 }
@@ -124,7 +67,7 @@ export interface OxygenSkipToOxygenContentFocus {
   left: string;
   lineHeight: string;
   top: string;
-  zIndex: number;
+  zIndex: string;
 }
 
 export enum FontSize {
@@ -134,67 +77,12 @@ export enum FontSize {
   The18Px = "18px",
 }
 
-export interface OxygenOxygenSliderNotDataOxygenSliderDisabled {
-  alignOxygenContent: string;
-  display: string;
-  overflow: string;
-  position: string;
-  userSelect: string;
-  webkitTouchCallout: string;
-  khtmlUserSelect: string;
-  msTouchOxygenAction: string;
-  touchOxygenAction: string;
-  webkitTapHighlightColor: string;
-  width: string;
-}
-
-export interface OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledOxygenSliderSlide {
-  position: string;
-  overflow: string;
-  width: string;
-  minHeight: string;
-}
-
-export interface OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderReverse {
-  flexDirection: string;
-}
-
-export interface OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderV {
-  flexWrap: string;
-}
-
-export interface OxygenToxTinymce {
-  color: string;
-  backgroundColor: string;
-  borderRadius: string;
-  borderColor: string;
-}
-
-export interface OxygenMediaMinWidth744Px {
-  ".react-modal-drawer-container": OxygenReactOxygenModalDrawerOxygenContainer;
-  "[data-rsbs-overlay], [data-rsbs-root]:after": OxygenReactOxygenModalDrawerOxygenContainer;
-}
-
-export interface OxygenReactOxygenModalDrawerOxygenContainer {
-  display: string;
-  visibility: string;
-}
-
-export interface OxygenDataRsbsOverlay {
-  borderTopLeftRadius: string;
-  borderTopRightRadius: string;
-}
-
-export interface OxygenDataOxygenSliderMoves {
-  pointerEvents: string;
-}
-
 export interface OxygenLangKoOxygenBody {
   wordBreak: string;
 }
 
 export interface OxygenTabindex1Focus {
-  outline: number;
+  outline: string;
 }
 
 export interface OxygenAAHoverAFocus {
@@ -204,42 +92,32 @@ export interface OxygenAAHoverAFocus {
 
 export interface OxygenBody {
   fontFamily: string;
+  fontSize: FontSize;
+  lineHeight: string;
   margin: string;
+  webkitFontSmoothing: string;
+  mozOsxFontSmoothing: string;
   lineBreak: string;
-  padding: string;
-  paddingRight: string;
-  overflow: string;
-  WebkitFontSmoothing: string;
-  MozOsxFontSmoothing: string;
 }
 
-export interface OxygenButtonOxygenOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit {
+export interface OxygenButtonOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit {
   webkitAppearance: string;
   cursor: string;
 }
 
-export interface OxygenHMargin {
+export interface OxygenH1H2H3H4H5H6 {
   marginTop: string;
   marginBottom: string;
 }
 
-export interface OxygenH1 {
-  fontFamily: string;
-}
-
-export interface OxygenHFirstOfType {
-  marginTop: number;
+export interface OxygenH1FirstChildH2FirstChildH3FirstChildH4FirstChildH5FirstChildH6FirstChild {
+  marginTop: string;
 }
 
 export interface OxygenHTML {
-  MsOxygenTextSizeAdjust: string;
-  MozOxygenTextSizeAdjust: string;
-  WebkitOxygenTextSizeAdjust: string;
-}
-
-export interface OxygenOxygenHTMLInputTypeButton {
-  WebkitAppearance: string;
-  cursor: string;
+  msOxygenTextSizeAdjust: string;
+  mozOxygenTextSizeAdjust: string;
+  webkitOxygenTextSizeAdjust: string;
 }
 
 export interface OxygenInputOxygenTextareaSelectButtonA {
@@ -999,7 +877,6 @@ const typeMap: any = {
   ),
   OxygenBaseline: o(
     [
-      { json: "#root", js: "#root", typ: r("OxygenRoot") },
       { json: "html", js: "html", typ: r("OxygenHTML") },
       {
         json: "*, *:before, *:after",
@@ -1008,27 +885,15 @@ const typeMap: any = {
       },
       { json: "body", js: "body", typ: r("OxygenBody") },
       {
-        json: "[lang='ko'] body",
-        js: "[lang='ko'] body",
+        json: '[lang="ko"] body',
+        js: '[lang="ko"] body',
         typ: r("OxygenLangKoOxygenBody"),
-      },
-      { json: "h1", js: "h1", typ: r("OxygenH1") },
-      { json: "h2", js: "h2", typ: r("OxygenH1") },
-      { json: "h3", js: "h3", typ: r("OxygenH1") },
-      { json: "h4", js: "h4", typ: r("OxygenH1") },
-      { json: "h5", js: "h5", typ: r("OxygenH1") },
-      { json: "h6", js: "h6", typ: r("OxygenH1") },
-      { json: "h-margin", js: "h-margin", typ: r("OxygenHMargin") },
-      {
-        json: "h:first-of-type",
-        js: "h:first-of-type",
-        typ: r("OxygenHFirstOfType"),
       },
       {
         json: 'button, html input[type="button"], input[type="reset"], input[type="submit"]',
         js: 'button, html input[type="button"], input[type="reset"], input[type="submit"]',
         typ: r(
-          "OxygenButtonOxygenOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit"
+          "OxygenButtonOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit"
         ),
       },
       {
@@ -1042,19 +907,16 @@ const typeMap: any = {
         typ: r("OxygenAAHoverAFocus"),
       },
       {
-        json: 'html input[type="button"]',
-        js: 'html input[type="button"]',
-        typ: r("OxygenOxygenHTMLInputTypeButton"),
+        json: "h1, h2, h3, h4, h5, h6",
+        js: "h1, h2, h3, h4, h5, h6",
+        typ: r("OxygenH1H2H3H4H5H6"),
       },
       {
-        json: 'input[type="reset"]',
-        js: 'input[type="reset"]',
-        typ: r("OxygenOxygenHTMLInputTypeButton"),
-      },
-      {
-        json: 'input[type="submit"]',
-        js: 'input[type="submit"]',
-        typ: r("OxygenOxygenHTMLInputTypeButton"),
+        json: "h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child",
+        js: "h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child",
+        typ: r(
+          "OxygenH1FirstChildH2FirstChildH3FirstChildH4FirstChildH5FirstChildH6FirstChild"
+        ),
       },
       {
         json: '[tabindex="-1"]:focus',
@@ -1067,149 +929,35 @@ const typeMap: any = {
         typ: r("OxygenScreenReaderOnly"),
       },
       {
-        json: ".screen-reader-only-focusable-actions",
-        js: ".screen-reader-only-focusable-actions",
-        typ: r("OxygenOxygenScreenReaderOnlyFocusableOxygenActions"),
+        json: ".screen-reader-only-focusable:active, .screen-reader-only-focusable:focus",
+        js: ".screen-reader-only-focusable:active, .screen-reader-only-focusable:focus",
+        typ: r("OxygenScreenReaderOnly"),
       },
       {
         json: ".skip-to-content:focus",
         js: ".skip-to-content:focus",
         typ: r("OxygenSkipToOxygenContentFocus"),
       },
-      {
-        json: ".only-light-mode",
-        js: ".only-light-mode",
-        typ: r("OxygenFilepondCredits"),
-      },
-      {
-        json: ".only-dark-mode",
-        js: ".only-dark-mode",
-        typ: r("OxygenFilepondCredits"),
-      },
-      {
-        json: ".mode-dark .only-light-mode",
-        js: ".mode-dark .only-light-mode",
-        typ: r("OxygenFilepondCredits"),
-      },
-      {
-        json: ".mode-dark .only-dark-mode",
-        js: ".mode-dark .only-dark-mode",
-        typ: r("OxygenFilepondCredits"),
-      },
-      {
-        json: ".slider:not([data-slider-disabled])",
-        js: ".slider:not([data-slider-disabled])",
-        typ: r("OxygenOxygenSliderNotDataOxygenSliderDisabled"),
-      },
-      {
-        json: ".slider:not([data-slider-disabled]) .slider__slide",
-        js: ".slider:not([data-slider-disabled]) .slider__slide",
-        typ: r(
-          "OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledOxygenSliderSlide"
-        ),
-      },
-      {
-        json: ".slider:not([data-slider-disabled])[data-slider-reverse]",
-        js: ".slider:not([data-slider-disabled])[data-slider-reverse]",
-        typ: r(
-          "OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderReverse"
-        ),
-      },
-      {
-        json: ".slider:not([data-slider-disabled])[data-slider-v]",
-        js: ".slider:not([data-slider-disabled])[data-slider-v]",
-        typ: r(
-          "OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderV"
-        ),
-      },
-      {
-        json: "[data-slider-moves] *",
-        js: "[data-slider-moves] *",
-        typ: r("OxygenDataOxygenSliderMoves"),
-      },
-      {
-        json: "@media (min-width: 744px)",
-        js: "@media (min-width: 744px)",
-        typ: r("OxygenMediaMinWidth744Px"),
-      },
-      {
-        json: ".filepond--root",
-        js: ".filepond--root",
-        typ: r("FilepondOxygenRoot"),
-      },
-      {
-        json: ".filepond--panel-root",
-        js: ".filepond--panel-root",
-        typ: r("FilepondPanelOxygenRoot"),
-      },
-      {
-        json: ".filepond--credits",
-        js: ".filepond--credits",
-        typ: r("OxygenFilepondCredits"),
-      },
-      {
-        json: "[data-rsbs-overlay]",
-        js: "[data-rsbs-overlay]",
-        typ: r("OxygenDataRsbsOverlay"),
-      },
-      { json: ".tox-tinymce", js: ".tox-tinymce", typ: r("OxygenToxTinymce") },
-      {
-        json: ".MuiBottomNavigationOxygenAction-label",
-        js: ".MuiBottomNavigationOxygenAction-label",
-        typ: r("OxygenMuiBottomNavigationOxygenActionLabel"),
-      },
     ],
     false
   ),
-  OxygenRoot: o([{ json: "overflow", js: "overflow", typ: "" }], false),
   OxygenBeforeAfter: o(
     [
-      { json: "WebkitBoxSizing", js: "WebkitBoxSizing", typ: "" },
-      { json: "MozBoxSizing", js: "MozBoxSizing", typ: "" },
+      { json: "webkitBoxSizing", js: "webkitBoxSizing", typ: "" },
+      { json: "mozBoxSizing", js: "mozBoxSizing", typ: "" },
       { json: "boxSizing", js: "boxSizing", typ: "" },
-      { json: "MsFlex", js: "MsFlex", typ: "" },
-    ],
-    false
-  ),
-  OxygenMuiBottomNavigationOxygenActionLabel: o(
-    [{ json: "opacity", js: "opacity", typ: "" }],
-    false
-  ),
-  OxygenFilepondCredits: o(
-    [{ json: "display", js: "display", typ: "" }],
-    false
-  ),
-  FilepondPanelOxygenRoot: o(
-    [{ json: "backgroundColor", js: "backgroundColor", typ: "" }],
-    false
-  ),
-  FilepondOxygenRoot: o(
-    [
-      { json: "color", js: "color", typ: "" },
-      { json: "borderRadius", js: "borderRadius", typ: "" },
-      { json: "boxShadow", js: "boxShadow", typ: "" },
+      { json: "msFlex", js: "msFlex", typ: "" },
     ],
     false
   ),
   OxygenScreenReaderOnly: o(
     [
-      { json: "border", js: "border", typ: 0 },
+      { json: "border", js: "border", typ: u(undefined, "") },
       { json: "clip", js: "clip", typ: "" },
       { json: "height", js: "height", typ: "" },
       { json: "margin", js: "margin", typ: "" },
       { json: "overflow", js: "overflow", typ: "" },
-      { json: "padding", js: "padding", typ: 0 },
-      { json: "position", js: "position", typ: "" },
-      { json: "width", js: "width", typ: "" },
-    ],
-    false
-  ),
-  OxygenOxygenScreenReaderOnlyFocusableOxygenActions: o(
-    [
-      { json: "clip", js: "clip", typ: "" },
-      { json: "height", js: "height", typ: "" },
-      { json: "margin", js: "margin", typ: 0 },
-      { json: "overflow", js: "overflow", typ: "" },
+      { json: "padding", js: "padding", typ: u(undefined, "") },
       { json: "position", js: "position", typ: "" },
       { json: "width", js: "width", typ: "" },
     ],
@@ -1224,94 +972,15 @@ const typeMap: any = {
       { json: "left", js: "left", typ: "" },
       { json: "lineHeight", js: "lineHeight", typ: "" },
       { json: "top", js: "top", typ: "" },
-      { json: "zIndex", js: "zIndex", typ: 0 },
+      { json: "zIndex", js: "zIndex", typ: "" },
     ],
-    false
-  ),
-  OxygenOxygenSliderNotDataOxygenSliderDisabled: o(
-    [
-      { json: "alignOxygenContent", js: "alignOxygenContent", typ: "" },
-      { json: "display", js: "display", typ: "" },
-      { json: "overflow", js: "overflow", typ: "" },
-      { json: "position", js: "position", typ: "" },
-      { json: "userSelect", js: "userSelect", typ: "" },
-      { json: "webkitTouchCallout", js: "webkitTouchCallout", typ: "" },
-      { json: "khtmlUserSelect", js: "khtmlUserSelect", typ: "" },
-      { json: "msTouchOxygenAction", js: "msTouchOxygenAction", typ: "" },
-      { json: "touchOxygenAction", js: "touchOxygenAction", typ: "" },
-      {
-        json: "webkitTapHighlightColor",
-        js: "webkitTapHighlightColor",
-        typ: "",
-      },
-      { json: "width", js: "width", typ: "" },
-    ],
-    false
-  ),
-  OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledOxygenSliderSlide: o(
-    [
-      { json: "position", js: "position", typ: "" },
-      { json: "overflow", js: "overflow", typ: "" },
-      { json: "width", js: "width", typ: "" },
-      { json: "minHeight", js: "minHeight", typ: "" },
-    ],
-    false
-  ),
-  OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderReverse: o(
-    [{ json: "flexDirection", js: "flexDirection", typ: "" }],
-    false
-  ),
-  OxygenOxygenOxygenSliderNotDataOxygenSliderDisabledDataOxygenSliderV: o(
-    [{ json: "flexWrap", js: "flexWrap", typ: "" }],
-    false
-  ),
-  OxygenToxTinymce: o(
-    [
-      { json: "color", js: "color", typ: "" },
-      { json: "backgroundColor", js: "backgroundColor", typ: "" },
-      { json: "borderRadius", js: "borderRadius", typ: "" },
-      { json: "borderColor", js: "borderColor", typ: "" },
-    ],
-    false
-  ),
-  OxygenMediaMinWidth744Px: o(
-    [
-      {
-        json: ".react-modal-drawer-container",
-        js: ".react-modal-drawer-container",
-        typ: r("OxygenReactOxygenModalDrawerOxygenContainer"),
-      },
-      {
-        json: "[data-rsbs-overlay], [data-rsbs-root]:after",
-        js: "[data-rsbs-overlay], [data-rsbs-root]:after",
-        typ: r("OxygenReactOxygenModalDrawerOxygenContainer"),
-      },
-    ],
-    false
-  ),
-  OxygenReactOxygenModalDrawerOxygenContainer: o(
-    [
-      { json: "display", js: "display", typ: "" },
-      { json: "visibility", js: "visibility", typ: "" },
-    ],
-    false
-  ),
-  OxygenDataRsbsOverlay: o(
-    [
-      { json: "borderTopLeftRadius", js: "borderTopLeftRadius", typ: "" },
-      { json: "borderTopRightRadius", js: "borderTopRightRadius", typ: "" },
-    ],
-    false
-  ),
-  OxygenDataOxygenSliderMoves: o(
-    [{ json: "pointerEvents", js: "pointerEvents", typ: "" }],
     false
   ),
   OxygenLangKoOxygenBody: o(
     [{ json: "wordBreak", js: "wordBreak", typ: "" }],
     false
   ),
-  OxygenTabindex1Focus: o([{ json: "outline", js: "outline", typ: 0 }], false),
+  OxygenTabindex1Focus: o([{ json: "outline", js: "outline", typ: "" }], false),
   OxygenAAHoverAFocus: o(
     [
       { json: "color", js: "color", typ: "" },
@@ -1322,55 +991,44 @@ const typeMap: any = {
   OxygenBody: o(
     [
       { json: "fontFamily", js: "fontFamily", typ: "" },
+      { json: "fontSize", js: "fontSize", typ: r("FontSize") },
+      { json: "lineHeight", js: "lineHeight", typ: "" },
       { json: "margin", js: "margin", typ: "" },
+      { json: "webkitFontSmoothing", js: "webkitFontSmoothing", typ: "" },
+      { json: "mozOsxFontSmoothing", js: "mozOsxFontSmoothing", typ: "" },
       { json: "lineBreak", js: "lineBreak", typ: "" },
-      { json: "padding", js: "padding", typ: "" },
-      { json: "paddingRight", js: "paddingRight", typ: "" },
-      { json: "overflow", js: "overflow", typ: "" },
-      { json: "WebkitFontSmoothing", js: "WebkitFontSmoothing", typ: "" },
-      { json: "MozOsxFontSmoothing", js: "MozOsxFontSmoothing", typ: "" },
     ],
     false
   ),
-  OxygenButtonOxygenOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit: o(
+  OxygenButtonOxygenHTMLInputTypeButtonInputTypeResetInputTypeSubmit: o(
     [
       { json: "webkitAppearance", js: "webkitAppearance", typ: "" },
       { json: "cursor", js: "cursor", typ: "" },
     ],
     false
   ),
-  OxygenHMargin: o(
+  OxygenH1H2H3H4H5H6: o(
     [
       { json: "marginTop", js: "marginTop", typ: "" },
       { json: "marginBottom", js: "marginBottom", typ: "" },
     ],
     false
   ),
-  OxygenH1: o([{ json: "fontFamily", js: "fontFamily", typ: "" }], false),
-  OxygenHFirstOfType: o(
-    [{ json: "marginTop", js: "marginTop", typ: 0 }],
-    false
-  ),
+  OxygenH1FirstChildH2FirstChildH3FirstChildH4FirstChildH5FirstChildH6FirstChild:
+    o([{ json: "marginTop", js: "marginTop", typ: "" }], false),
   OxygenHTML: o(
     [
-      { json: "MsOxygenTextSizeAdjust", js: "MsOxygenTextSizeAdjust", typ: "" },
+      { json: "msOxygenTextSizeAdjust", js: "msOxygenTextSizeAdjust", typ: "" },
       {
-        json: "MozOxygenTextSizeAdjust",
-        js: "MozOxygenTextSizeAdjust",
+        json: "mozOxygenTextSizeAdjust",
+        js: "mozOxygenTextSizeAdjust",
         typ: "",
       },
       {
-        json: "WebkitOxygenTextSizeAdjust",
-        js: "WebkitOxygenTextSizeAdjust",
+        json: "webkitOxygenTextSizeAdjust",
+        js: "webkitOxygenTextSizeAdjust",
         typ: "",
       },
-    ],
-    false
-  ),
-  OxygenOxygenHTMLInputTypeButton: o(
-    [
-      { json: "WebkitAppearance", js: "WebkitAppearance", typ: "" },
-      { json: "cursor", js: "cursor", typ: "" },
     ],
     false
   ),

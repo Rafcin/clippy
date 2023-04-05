@@ -51,7 +51,7 @@
     "ts": "node -r esbuild-register",
     "size": "pnpm run size-limit",
     "[--- Test ---]": "",
-    "test": "pnpm json-to-js -i ./example/input.json -o ./example/output.ts --ts"
+    "test": "pnpm jtj -i ./example/input.json -o ./example/output.ts --ts -n example"
   },
   "bin": {
     "jtj": "./dist/index.js"

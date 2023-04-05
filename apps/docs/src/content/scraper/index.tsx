@@ -1,9 +1,7 @@
 import { api } from "@/trpc/api";
-import { removeDuplicateUrls } from "@/utils/scraper";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Error, Loading } from "@oxygen/design-system";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { UrlPreview } from "../preview";

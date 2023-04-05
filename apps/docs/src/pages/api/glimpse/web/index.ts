@@ -4,17 +4,8 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { SupabaseVectorStore } from "langchain/vectorstores";
 import { openaiEmbeddings } from "@/utils/langchain/openai";
 import { supabaseClient } from "@/utils/langchain/supabase";
-import Scraper from "@/utils/scraper";
-import cheerio from "cheerio";
-
-async function splitDocsIntoChunks(docs: Document[]): Promise<Document[]> {
-  const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 2000,
-    chunkOverlap: 200,
-  });
-
-  return await splitter.splitDocuments(docs);
-}
+import Scraper from "@/utils/langchain/scraper";
+import { splitDocsIntoChunks } from "@/utils/langchain/tools/utils";
 
 async function getMetadataFromHtml(html: string, url: string) {
   // Use a library like cheerio to parse the HTML and extract the metadata

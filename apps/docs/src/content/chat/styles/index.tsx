@@ -39,7 +39,7 @@ export const ChatBody = styled("div", {
   {
     width: "100%",
     height: "100%",
-    borderRadius: "3rem",
+    borderRadius: "2rem",
     //border: `1px solid ${theme?.vars.palette.inputs.inputBorder}`,
     boxShadow: `0 0 0 1.2px ${theme?.vars.palette.inputs.inputBorder}`,
     background: "transparent",

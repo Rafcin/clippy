@@ -36,10 +36,15 @@ export default class Scraper {
           const url = request.url;
           const content = await page.content();
           const title = await page.title();
-          const screenshot = await page.screenshot();
+          // const title = $("title").text();
+          // const description = $('meta[name="description"]').attr("content");
+          // const image = $('meta[property="og:image"]').attr("content");
 
           // Load and parse the content with Cheerio
           const $ = cheerio.load(content);
+          // Extract the description and Open Graph image (if available)
+          const description = $('meta[name="description"]').attr("content");
+          const image = $('meta[property="og:image"]').attr("content");
           // Remove unwanted elements
           $("nav, .skip-content, .navbar, .footer, .ads, .header").remove();
 
@@ -53,7 +58,9 @@ export default class Scraper {
           const metadata = {
             title,
             url,
-            screenshot: Buffer.from(screenshot).toString("base64"),
+            //screenshot: Buffer.from(screenshot).toString("base64"),
+            description,
+            image,
             scrapedAt: new Date().toISOString(),
           };
           console.log("Metadata:", metadata);

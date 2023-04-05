@@ -1,5 +1,6 @@
 import { getBaseUrl } from "@/utils/api";
 import axios from "axios";
+import { BaseChatMessage } from "langchain/schema";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
@@ -8,7 +9,11 @@ export const clippyRouter = createTRPCRouter({
     .input(
       z.object({
         question: z.string(),
-        history: z.array(z.tuple([z.string(), z.string()])),
+        history: z.array(
+          z.object({
+            text: z.string(),
+          })
+        ),
       })
     )
     .mutation(async ({ input }) => {

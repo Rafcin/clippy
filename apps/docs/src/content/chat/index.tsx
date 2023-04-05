@@ -1,10 +1,16 @@
 import Markdown from "@/content/markdown";
 import { api } from "@/trpc/api";
-import { Message } from "@/types/openai";
-import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { Avatar, Box, Button } from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Avatar, Box } from "@mui/material";
 import { Pulse } from "@oxygen/design-system";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  AIChatMessage,
+  BaseChatMessage,
+  HumanChatMessage,
+} from "langchain/schema";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   ChatBody,
   ChatButton,
@@ -13,100 +19,51 @@ import {
   ChatTextarea,
 } from "./styles";
 
+const chatSchema = z.object({
+  question: z.string(),
+});
+
+interface ChatData {
+  question: string;
+}
+
 export default function Chat() {
-  const [query, setQuery] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [messageState, setMessageState] = useState<{
-    messages: Message[];
-    pending?: string;
-    history: [string, string][];
-  }>({
-    messages: [
-      {
-        message: "Hi there how can I help you?",
-        type: "apiMessage",
-      },
-    ],
-    history: [],
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ChatData>({
+    resolver: zodResolver(chatSchema),
   });
-  const [error, setError] = useState<boolean>(false); // new error state
 
-  const { messages, pending, history } = messageState;
-
-  const messageListRef = useRef<HTMLDivElement>(null);
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    textAreaRef.current?.focus();
-  }, []);
+  const [msgs, setMsgs] = useState<BaseChatMessage[]>([
+    new AIChatMessage("Hi there how can I help you?"),
+  ]);
 
   // TRPC mutation
-  const clippyQuery = api.clippy.query.useMutation();
+  const clippyQuery = api.clippy.query.useMutation({
+    onSuccess: (data) => {
+      console.log("data", data);
+      setMsgs([...msgs, new AIChatMessage(data.output)]);
+      console.log("msgs", msgs);
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
+  });
 
-  //handle form submission
-  async function handleSubmit(e: any) {
-    e.preventDefault();
-
-    if (!query) {
+  async function onSubmit(data: ChatData) {
+    const { question } = data;
+    if (!question) {
       alert("Please input a question");
       return;
     }
-
-    const question = query.trim();
-
-    setMessageState((state) => ({
-      ...state,
-      messages: [
-        ...state.messages,
-        {
-          type: "userMessage",
-          message: question,
-        },
-      ],
-      pending: undefined,
-    }));
-
-    setLoading(true);
-    setQuery("");
-
-    try {
-      const response = await clippyQuery.mutateAsync({ question, history });
-      console.log("response", response);
-      setMessageState((state) => ({
-        history: [...state.history, [question, response.text]], // update to use response.data.text
-        messages: [
-          ...state.messages,
-          {
-            type: "apiMessage",
-            message: response.text, // update to use response.data.text
-          },
-        ],
-        pending: undefined,
-      }));
-      setError(false); // reset error state if there is no error
-    } catch (error) {
-      console.log("error", error);
-      setError(true); // set error state to true
-    } finally {
-      setLoading(false);
-    }
+    setMsgs([...msgs, new HumanChatMessage(question)]);
+    // Clear the input field
+    setValue("question", "");
+    await clippyQuery.mutateAsync({ question, history: msgs });
   }
-
-  //prevent empty submissions
-  const handleEnter = (e: any) => {
-    if (e.key === "Enter" && query) {
-      handleSubmit(e);
-    } else if (e.key == "Enter") {
-      e.preventDefault();
-    }
-  };
-
-  const chatMessages = useMemo(() => {
-    return [
-      ...messages,
-      ...(pending ? [{ type: "apiMessage", message: pending }] : []),
-    ];
-  }, [messages, pending]);
 
   return (
     <>
@@ -114,8 +71,9 @@ export default function Chat() {
         <ChatContainer>
           <ChatMain>
             <ChatBody>
-              <Box ref={messageListRef} sx={{ width: "100%", height: "100%" }}>
-                {chatMessages.map((message, index) => {
+              <Box sx={{ width: "100%", height: "100%" }}>
+                {msgs.map((message: BaseChatMessage, index: number) => {
+                  const isAi = Boolean(message._getType() === "ai");
                   return (
                     <Box
                       key={index}
@@ -126,7 +84,7 @@ export default function Chat() {
                         padding: "1.5rem",
                         color: theme?.vars.palette.text?.primary,
                         borderBottom: `1px solid ${theme?.vars.palette.background?.backgroundHighlight}`,
-                        ...(message.type === "apiMessage"
+                        ...(isAi
                           ? {
                               backgroundColor:
                                 theme?.vars.palette.background
@@ -149,7 +107,7 @@ export default function Chat() {
                             backgroundColor: theme?.vars.palette.primary?.main,
                           })}
                         >
-                          {message.type === "apiMessage" ? "🤖" : "🧑"}
+                          {isAi ? "🤖" : "🧑"}
                         </Avatar>
                       </Box>
                       <Box
@@ -159,7 +117,7 @@ export default function Chat() {
                           alignItems: "center",
                         }}
                       >
-                        <Markdown children={message.message} />
+                        <Markdown children={message.text} />
                       </Box>
                     </Box>
                   );
@@ -179,7 +137,7 @@ export default function Chat() {
               <Box sx={{ position: "relative" }}>
                 <Box
                   component="form"
-                  onSubmit={handleSubmit}
+                  onSubmit={handleSubmit(onSubmit)}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -188,22 +146,19 @@ export default function Chat() {
                   }}
                 >
                   <ChatTextarea
-                    disabled={loading}
-                    onKeyDown={handleEnter}
-                    ref={textAreaRef}
+                    disabled={clippyQuery.isLoading}
                     autoFocus={false}
                     rows={1}
                     maxLength={512}
-                    id="userInput"
-                    name="userInput"
                     placeholder={
-                      loading ? "Waiting for response..." : "Send a message..."
+                      clippyQuery.isLoading
+                        ? "Waiting for response..."
+                        : "Send a message..."
                     }
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    {...register("question")}
                   />
-                  <ChatButton type="submit" disabled={loading}>
-                    {loading ? (
+                  <ChatButton type="submit" disabled={clippyQuery.isLoading}>
+                    {clippyQuery.isLoading ? (
                       <Box
                         sx={{
                           position: "absolute",

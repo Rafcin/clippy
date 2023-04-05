@@ -1,56 +1,27 @@
 export const theme = {
   "baseline": {
-    "#root": {
-      "overflow": "auto"
-    },
     "html": {
-      "MsTextSizeAdjust": "100%",
-      "MozTextSizeAdjust": "100%",
-      "WebkitTextSizeAdjust": "100%"
+      "msTextSizeAdjust": "100%",
+      "mozTextSizeAdjust": "100%",
+      "webkitTextSizeAdjust": "100%"
     },
     "*, *:before, *:after": {
-      "WebkitBoxSizing": "border-box",
-      "MozBoxSizing": "border-box",
+      "webkitBoxSizing": "border-box",
+      "mozBoxSizing": "border-box",
       "boxSizing": "border-box",
-      "MsFlex": "0 1 auto"
+      "msFlex": "0 1 auto"
     },
     "body": {
       "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif",
+      "fontSize": "14px",
+      "lineHeight": "1.43",
       "margin": "0",
-      "lineBreak": "strict",
-      "padding": "0",
-      "paddingRight": "0px !important",
-      "overflow": "auto",
-      "WebkitFontSmoothing": "antialiased",
-      "MozOsxFontSmoothing": "grayscale"
+      "webkitFontSmoothing": "antialiased",
+      "mozOsxFontSmoothing": "grayscale",
+      "lineBreak": "strict"
     },
-    "[lang='ko'] body": {
+    "[lang=\"ko\"] body": {
       "wordBreak": "keep-all"
-    },
-    "h1": {
-      "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif"
-    },
-    "h2": {
-      "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif"
-    },
-    "h3": {
-      "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif"
-    },
-    "h4": {
-      "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif"
-    },
-    "h5": {
-      "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif"
-    },
-    "h6": {
-      "fontFamily": "Belle,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif"
-    },
-    "h-margin": {
-      "marginTop": "25px",
-      "marginBottom": " 15px"
-    },
-    "h:first-of-type": {
-      "marginTop": 0
     },
     "button, html input[type=\"button\"], input[type=\"reset\"], input[type=\"submit\"]": {
       "webkitAppearance": "button",
@@ -64,35 +35,30 @@ export const theme = {
       "color": "inherit",
       "textDecoration": "none"
     },
-    "html input[type=\"button\"]": {
-      "WebkitAppearance": "button",
-      "cursor": "pointer"
+    "h1, h2, h3, h4, h5, h6": {
+      "marginTop": "25px",
+      "marginBottom": "15px"
     },
-    "input[type=\"reset\"]": {
-      "WebkitAppearance": "button",
-      "cursor": "pointer"
-    },
-    "input[type=\"submit\"]": {
-      "WebkitAppearance": "button",
-      "cursor": "pointer"
+    "h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child": {
+      "marginTop": "0"
     },
     "[tabindex=\"-1\"]:focus": {
-      "outline": 0
+      "outline": "0"
     },
     ".screen-reader-only": {
-      "border": 0,
+      "border": "0",
       "clip": "rect(0, 0, 0, 0)",
       "height": "1px",
       "margin": "-1px",
       "overflow": "hidden",
-      "padding": 0,
+      "padding": "0",
       "position": "absolute",
       "width": "1px"
     },
-    ".screen-reader-only-focusable-actions": {
+    ".screen-reader-only-focusable:active, .screen-reader-only-focusable:focus": {
       "clip": "auto",
       "height": "auto",
-      "margin": 0,
+      "margin": "0",
       "overflow": "visible",
       "position": "static",
       "width": "auto"
@@ -105,81 +71,7 @@ export const theme = {
       "left": "3px",
       "lineHeight": "64px",
       "top": "3px",
-      "zIndex": 10000
-    },
-    ".only-light-mode": {
-      "display": "block"
-    },
-    ".only-dark-mode": {
-      "display": "none"
-    },
-    ".mode-dark .only-light-mode": {
-      "display": "none"
-    },
-    ".mode-dark .only-dark-mode": {
-      "display": "block"
-    },
-    ".slider:not([data-slider-disabled])": {
-      "alignContent": "flex-start",
-      "display": "flex",
-      "overflow": "hidden",
-      "position": "relative",
-      "userSelect": "none",
-      "webkitTouchCallout": "none",
-      "khtmlUserSelect": "none",
-      "msTouchAction": "pan-y",
-      "touchAction": "pan-y",
-      "webkitTapHighlightColor": "transparent",
-      "width": "100%"
-    },
-    ".slider:not([data-slider-disabled]) .slider__slide": {
-      "position": "relative",
-      "overflow": "hidden",
-      "width": "100%",
-      "minHeight": "100%"
-    },
-    ".slider:not([data-slider-disabled])[data-slider-reverse]": {
-      "flexDirection": "row-reverse"
-    },
-    ".slider:not([data-slider-disabled])[data-slider-v]": {
-      "flexWrap": "wrap"
-    },
-    "[data-slider-moves] *": {
-      "pointerEvents": "none"
-    },
-    "@media (min-width: 744px)": {
-      ".react-modal-drawer-container": {
-        "display": "none",
-        "visibility": "hidden"
-      },
-      "[data-rsbs-overlay], [data-rsbs-root]:after": {
-        "display": "none",
-        "visibility": "hidden"
-      }
-    },
-    ".filepond--root": {
-      "color": "#343434",
-      "borderRadius": "8px",
-      "boxShadow": "rgb(176 176 176) 0px 0px 0px 1px inset"
-    },
-    ".filepond--panel-root": {
-      "backgroundColor": "transparent"
-    },
-    ".filepond--credits": {
-      "display": "none"
-    },
-    "[data-rsbs-overlay]": {
-      "borderTopLeftRadius": "24px",
-      "borderTopRightRadius": "24px"
-    },
-    ".tox-tinymce": {
-      "color": "rgb(34, 34, 34)",
-      "backgroundColor": "rgb(255, 255, 255)",
-      "borderRadius": "8px",
-      "borderColor": "rgb(176 176 176)"
-    },
-    ".MuiBottomNavigationAction-label": {
-      "opacity": "1"
+      "zIndex": "10000"
     }
   },
   "breakpoints": {
@@ -851,12 +743,12 @@ export const theme = {
           "background": "#fff"
         },
         "Avatar": {
-          "defaultBg": "var(--mui-palette-grey-400)"
+          "defaultBg": "#222"
         },
         "Chip": {
-          "defaultBorder": "var(--mui-palette-grey-400)",
-          "defaultAvatarColor": "var(--mui-palette-grey-700)",
-          "defaultIconColor": "var(--mui-palette-grey-700)"
+          "defaultBorder": "#222",
+          "defaultAvatarColor": "#fff",
+          "defaultIconColor": "#222"
         },
         "FilledInput": {
           "bg": "rgba(0, 0, 0, 0.06)",
@@ -1184,12 +1076,12 @@ export const theme = {
           "background": "rgb(18, 18, 18)"
         },
         "Avatar": {
-          "defaultBg": "var(--mui-palette-grey-400)"
+          "defaultBg": "#fff"
         },
         "Chip": {
-          "defaultBorder": "var(--mui-palette-grey-400)",
-          "defaultAvatarColor": "var(--mui-palette-grey-700)",
-          "defaultIconColor": "var(--mui-palette-grey-700)"
+          "defaultBorder": "#fff",
+          "defaultAvatarColor": "#222",
+          "defaultIconColor": "#fff"
         },
         "FilledInput": {
           "bg": "rgba(0, 0, 0, 0.06)",
