@@ -9,15 +9,18 @@ import {
   HumanChatMessage,
 } from "langchain/schema";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   ChatBody,
   ChatButton,
   ChatContainer,
+  ChatForm,
   ChatMain,
   ChatTextarea,
+  ChatMessage,
 } from "./styles";
+import { default as Grid } from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const chatSchema = z.object({
   question: z.string(),
@@ -32,6 +35,7 @@ export default function Chat() {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm<ChatData>({
     resolver: zodResolver(chatSchema),
@@ -66,8 +70,15 @@ export default function Chat() {
   }
 
   return (
-    <>
-      <Box>
+    <Box
+      sx={{
+        display: "block",
+        position: "relative",
+        height: "100%",
+        overflow: "auto",
+      }}
+    >
+      <Box sx={{ display: "inline" }}>
         <ChatContainer>
           <ChatMain>
             <ChatBody>
@@ -75,27 +86,7 @@ export default function Chat() {
                 {msgs.map((message: BaseChatMessage, index: number) => {
                   const isAi = Boolean(message._getType() === "ai");
                   return (
-                    <Box
-                      key={index}
-                      sx={(theme: any) => ({
-                        display: "flex",
-
-                        width: "100%",
-                        padding: "1.5rem",
-                        color: theme?.vars.palette.text?.primary,
-                        borderBottom: `1px solid ${theme?.vars.palette.background?.backgroundHighlight}`,
-                        ...(isAi
-                          ? {
-                              backgroundColor:
-                                theme?.vars.palette.background
-                                  ?.backgroundContrast,
-                            }
-                          : {
-                              backgroundColor:
-                                theme?.vars.palette.background?.backgroundLight,
-                            }),
-                      })}
-                    >
+                    <ChatMessage key={index}>
                       <Box
                         sx={{
                           marginRight: "10px",
@@ -119,78 +110,82 @@ export default function Chat() {
                       >
                         <Markdown children={message.text} />
                       </Box>
-                    </Box>
+                    </ChatMessage>
                   );
                 })}
               </Box>
             </ChatBody>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "relative",
-                padding: "2rem 0",
-                flexDirection: "column",
-              }}
-            >
-              <Box sx={{ position: "relative" }}>
-                <Box
-                  component="form"
-                  onSubmit={handleSubmit(onSubmit)}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <ChatTextarea
-                    disabled={clippyQuery.isLoading}
-                    autoFocus={false}
-                    rows={1}
-                    maxLength={512}
-                    placeholder={
-                      clippyQuery.isLoading
-                        ? "Waiting for response..."
-                        : "Send a message..."
-                    }
-                    {...register("question")}
-                  />
-                  <ChatButton type="submit" disabled={clippyQuery.isLoading}>
-                    {clippyQuery.isLoading ? (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: "0.2rem",
-                          right: "0.25rem",
-                        }}
-                      >
-                        <Pulse />
-                      </Box>
-                    ) : (
-                      // Send icon SVG in input field
-                      <Box
-                        component="svg"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        sx={{
-                          transform: "rotate(90deg)",
-                          width: "1.2em",
-                          height: "1.2em",
-                          fill: "currentColor",
-                        }}
-                      >
-                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                      </Box>
-                    )}
-                  </ChatButton>
-                </Box>
-              </Box>
-            </Box>
           </ChatMain>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
+              padding: "2rem 0",
+              flexDirection: "column",
+              width: "100%",
+              marginTop: "auto",
+            }}
+          >
+            <Box sx={{ position: "relative", width: "100%" }}>
+              <ChatForm onSubmit={handleSubmit(onSubmit)}>
+                <Controller
+                  control={control}
+                  name="question"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <ChatTextarea
+                      disabled={clippyQuery.isLoading}
+                      autoFocus={false}
+                      rows={1}
+                      placeholder={
+                        clippyQuery.isLoading
+                          ? "Waiting for response..."
+                          : "Send a message..."
+                      }
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      ref={ref}
+                    />
+                  )}
+                />
+
+                <ChatButton type="submit" disabled={clippyQuery.isLoading}>
+                  {clippyQuery.isLoading ? (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: "0.2rem",
+                        right: "0.25rem",
+                      }}
+                    >
+                      <Pulse />
+                    </Box>
+                  ) : (
+                    // Send icon SVG in input field
+                    <Box
+                      component="svg"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      sx={{
+                        transform: "rotate(90deg)",
+                        width: "1.2em",
+                        height: "1.2em",
+                        fill: "currentColor",
+                        display: "inline-block",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                    </Box>
+                  )}
+                </ChatButton>
+              </ChatForm>
+            </Box>
+          </Box>
         </ChatContainer>
       </Box>
-    </>
+    </Box>
   );
 }

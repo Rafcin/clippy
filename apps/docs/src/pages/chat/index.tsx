@@ -27,6 +27,7 @@ const Chat: React.FC<
   return (
     <Box
       sx={(theme: any) => ({
+        height: "75vh",
         marginTop: "30px",
         marginBottom: "80px",
         marginLeft: "auto",

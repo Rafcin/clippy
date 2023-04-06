@@ -1,6 +1,7 @@
 import { SearchEngineScraper } from "@/utils/langchain/search";
 import { Crawler } from "@/utils/langchain/search/plugin/plugins/crawler";
 import { Bard } from "@/utils/langchain/search/plugin/plugins/google/bard";
+import { BardSearch } from "@/utils/langchain/search/plugin/plugins/google/bardsearch";
 import { OrganicSearches } from "@/utils/langchain/search/plugin/plugins/google/organicsearches";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -23,8 +24,8 @@ export default async function handler(
     const scraper = new SearchEngineScraper();
 
     scraper.setEngine("Google");
-    scraper.addPlugin(new OrganicSearches());
-    scraper.addPlugin(new Bard());
+    scraper.addPlugin(new BardSearch());
+    //scraper.addPlugin(new Bard());
     const searches = await scraper.search(question);
     // scraper.setEngine("Crawler");
     // scraper.addPlugin(new Crawler());

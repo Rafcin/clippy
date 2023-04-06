@@ -1,17 +1,24 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
+import InputBase from "@mui/material/InputBase";
 
 export const ChatContainer = styled("div", {
   name: "MuiChatContainer",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
-})<{ theme?: any }>(() => [
+})<{ theme?: any }>(({ theme }) => [
   {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "2rem",
+    overflowX: "hidden",
+    padding: "12px 26px 24px",
+    background: theme?.vars.palette.background?.backgroundContrast,
+    borderRadius: "28px",
+    height: "100%",
+    "::-webkit-scrollbar": {
+      display: "none",
+    },
   },
 ]);
 
@@ -39,9 +46,9 @@ export const ChatBody = styled("div", {
   {
     width: "100%",
     height: "100%",
-    borderRadius: "2rem",
+    borderRadius: "21px",
     //border: `1px solid ${theme?.vars.palette.inputs.inputBorder}`,
-    boxShadow: `0 0 0 1.2px ${theme?.vars.palette.inputs.inputBorder}`,
+    //boxShadow: `0 0 0 1.2px ${theme?.vars.palette.inputs.inputBorder}`,
     background: "transparent",
     color: theme?.vars.palette.text.primary,
     display: "flex",
@@ -54,22 +61,28 @@ export const ChatBody = styled("div", {
   },
 ]);
 
-export const ChatTextarea = styled("textarea", {
-  name: "MuiChatTextarea",
+export const ChatForm = styled("form", {
+  name: "MuiChatForm",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(({ theme }) => [
   {
-    position: "relative",
-    resize: "none",
-    fontSize: "1.1rem",
-    padding: "1rem 2rem 1rem 2rem",
-    width: "75vw",
-    borderRadius: "25px",
-    border: `1px solid ${theme?.vars.palette.inputs.inputBorder}`,
-    background: "transparent",
+    borderRadius: "30px",
+    background: theme?.vars.palette.inputs.inputBackground,
     color: theme?.vars.palette.text.primary,
-    outline: "none",
+    border: `1px solid ${theme?.vars.palette.inputs.inputBorder}`,
+
+    fontSize: "1rem",
+    fontWeight: 400,
+    lineHeight: "1.5rem",
+    letterSpacing: "normal",
+
+    display: "flex",
+    alignItems: "center",
+
+    width: "100%",
+    padding: "0.4rem 1.2rem 0.4rem 1.2rem",
+
     ":disabled": { opacity: 0.5 },
     ":focus": {
       outline: "none",
@@ -81,21 +94,39 @@ export const ChatTextarea = styled("textarea", {
   },
 ]);
 
+export const ChatTextarea = styled(InputBase, {
+  name: "MuiChatTextarea",
+  slot: "Root",
+  overridesResolver: (props, styles) => styles.root,
+})<{ theme?: any }>(({ theme }) => [
+  {
+    flex: "1 1 0%",
+    display: "inline-flex",
+    alignItems: "center",
+    position: "relative",
+  },
+]);
+
 export const ChatButton = styled(Button, {
   name: "MuiChatButton",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root,
 })<{ theme?: any }>(({ theme }) => [
   {
-    position: "absolute",
-    top: "0.4rem",
-    right: "1rem",
+    width: "44px",
+    minWidth: "44px",
+    height: "44px",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: "0 0 auto",
+    overflow: "visible",
     color: theme?.vars.palette.text.contrastText,
     background: theme?.vars.palette.text.primary,
-    padding: "0.72rem",
+    padding: "0.75rem",
     border: "none",
-    display: "flex",
-    borderRadius: "25px",
+    borderRadius: "50%",
+    margin: 0,
     ":hover": {
       color: theme?.vars.palette.text.contrastText,
       background: theme?.vars.palette.text.primary,
@@ -105,5 +136,21 @@ export const ChatButton = styled(Button, {
       cursor: "not-allowed",
       background: "none",
     },
+  },
+]);
+
+export const ChatMessage = styled("div", {
+  name: "MuiChatMessage",
+  slot: "Root",
+  overridesResolver: (props, styles) => styles.root,
+})<{ theme?: any }>(({ theme }) => [
+  {
+    borderRadius: "15px",
+    background: theme?.vars.palette.inputs.inputBackground,
+    color: theme?.vars.palette.text.primary,
+    display: "flex",
+    width: "100%",
+    padding: "1.5rem",
+    marginBottom: "15px",
   },
 ]);

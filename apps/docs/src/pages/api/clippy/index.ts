@@ -1,10 +1,11 @@
 import { openai } from "@/utils/langchain/openai";
+import { GoogleSearch } from "@/utils/langchain/plugins/googlesearch";
 import { supabaseClient } from "@/utils/langchain/supabase";
 import { initializeAgentExecutor } from "langchain/agents";
 import { VectorDBQAChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models";
 import { OpenAIEmbeddings } from "langchain/embeddings";
-import { BufferMemory, ChatMessageHistory } from "langchain/memory";
+import { BufferMemory } from "langchain/memory";
 import { Calculator, ChainTool } from "langchain/tools";
 import { SupabaseVectorStore } from "langchain/vectorstores";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -34,14 +35,15 @@ export default async function handler(
   const vectorChain = VectorDBQAChain.fromLLM(openai, vectorStore);
 
   // Create a chain with the vectorstore and the model
-  const qaTool = new ChainTool({
-    name: "qa-tool",
+  const vectorDocumentTool = new ChainTool({
+    name: "vector-document-tool",
     description:
-      "QA Tool - used to search for documents and answer questions in our document store.",
+      "Vector Document Tool - useful for when you need to ask questions about documentation and uploaded files.",
     chain: vectorChain,
   });
 
-  const tools = [new Calculator(), qaTool];
+  //const tools = [new Calculator(), new GoogleSearch(), vectorDocumentTool];
+  const tools = [new GoogleSearch(), vectorDocumentTool, new Calculator()];
   const executor = await initializeAgentExecutor(
     tools,
     model,
@@ -52,7 +54,7 @@ export default async function handler(
     returnMessages: true,
     memoryKey: "chat_history",
     inputKey: "input",
-    chatHistory: new ChatMessageHistory(history),
+    //chatHistory: new ChatMessageHistory(history),
   });
 
   try {

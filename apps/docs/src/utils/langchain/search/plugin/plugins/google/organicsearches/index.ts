@@ -103,6 +103,6 @@ export class OrganicSearches implements Plugin {
       });
     });
 
-    return { organic_searches: searchResults };
+    return { response: searchResults };
   }
 }
