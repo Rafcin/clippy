@@ -2,11 +2,16 @@ import { Page } from "puppeteer";
 import { Plugin } from "../..";
 import { Document } from "langchain/document";
 import TurndownService from "turndown";
-import { EngineType } from "../../..";
 import { splitDocsIntoChunks } from "@/utils/langchain/tools/utils";
 import { SupabaseVectorStore } from "langchain/vectorstores";
 import { openaiEmbeddings } from "@/utils/langchain/openai";
 import { supabaseClient } from "@/utils/langchain/supabase";
+import { EngineType } from "../../..";
+
+/**
+ * Crawler plugin
+ * @description Crawls a websites, extracts the main content and stores it in a Supabase Vector Store. Data is embedded using OpenAI's embeddings.
+ */
 
 type History = {
   [key: string]: string;

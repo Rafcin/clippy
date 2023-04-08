@@ -1,4 +1,4 @@
-import { EngineType } from "@/utils/langchain/search";
+import { EngineType } from "@/openai/engines/search";
 import { Bard as GoogleBard } from "googlebard";
 import { Page } from "puppeteer";
 import type { Plugin } from "../../..";

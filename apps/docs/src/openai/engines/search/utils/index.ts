@@ -1,4 +1,5 @@
-import { USERAGENTS } from "../agents";
+import { ElementHandle, Page } from "puppeteer";
+import { USERAGENTS } from "../config/agents";
 
 /**
  * Returns headers with a random user agent.
@@ -125,4 +126,70 @@ export function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+/**
+ * Extracts large bodies of text from a given page.
+ *
+ * @param {puppeteer.Page} page - A Puppeteer Page object.
+ * @returns {Promise<string>} A promise that resolves to a string containing the extracted content.
+ */
+export async function extractLargeBodiesOfText(page: Page): Promise<string> {
+  // Common container elements and their corresponding CSS selectors.
+  const commonSelectors: string[] = [
+    "article",
+    "main",
+    "section",
+    "div.content",
+    "div.post",
+    "div.entry-content",
+    "div.article-content",
+  ];
+
+  // Check for common container elements.
+  for (const selector of commonSelectors) {
+    const content: ElementHandle<Element> | null = await page.$(selector);
+    if (content) {
+      return (await content.evaluate((el: Element) =>
+        el.textContent!.trim()
+      )) as string;
+    }
+  }
+
+  // If no common container element is found, try a more flexible approach.
+  const allTextNodes: string[] = await page.evaluate(() => {
+    /**
+     * @callback TextNodeCallback
+     * @param {Text} node - A text node.
+     */
+
+    /**
+     * Walks a node tree and calls the given callback for each text node.
+     *
+     * @param {Node} node - The current node in the tree.
+     * @param {TextNodeCallback} callback - A callback function to call for each text node.
+     */
+    function walkNodeTree(node: Node, callback: (node: Text) => void) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        callback(node as Text);
+      } else {
+        for (const child of node.childNodes) {
+          walkNodeTree(child, callback);
+        }
+      }
+    }
+
+    /** @type {string[]} */
+    const allTextNodes: string[] = [];
+    walkNodeTree(document.body, (node: Text) => {
+      if (node.textContent!.trim().length > 0) {
+        allTextNodes.push(node.textContent!);
+      }
+    });
+    return allTextNodes;
+  });
+
+  // Filter out short text nodes and join the remaining ones.
+  const largeTextNodes = allTextNodes.filter((text) => text.length > 100);
+  return largeTextNodes.join("\n\n");
 }
