@@ -1,6 +1,8 @@
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { Plugin, InternalHistory } from "./plugin";
+import { Document } from "langchain/document";
+import { Bard as GoogleBard } from "googlebard";
 
 puppeteer.use(StealthPlugin());
 
@@ -29,9 +31,14 @@ interface CrawledData {
   timestamp: string;
 
   /**
+   * Analysis of the URL by Bard
+   */
+  analysis?: string;
+
+  /**
    * The extracted data from the web page.
    */
-  [key: string]: any;
+  documents: Document[];
 }
 
 /**
@@ -68,6 +75,14 @@ export class Crawler {
    *          If no data could be extracted, the promise will be rejected with an error.
    */
   async getDataFromUrl(url: string): Promise<CrawledData> {
+    const BARD_KEY = process.env.BARD_KEY;
+
+    if (!BARD_KEY) {
+      throw new Error(
+        "BARD_KEY is required. Please set it in the environment."
+      );
+    }
+
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
@@ -76,17 +91,29 @@ export class Crawler {
       timeout: 60000,
     });
 
-    const timestamp = new Date().toISOString();
+    console.log("Page loaded:", url);
 
-    let data: Record<string, any> | undefined;
+    const timestamp = new Date().toISOString();
+    const documents: Document[] = [];
+
     for (const plugin of this.plugins) {
       if (plugin.baseUrl && !url.startsWith(plugin.baseUrl)) {
+        console.log("Exempting plugin", plugin.name, "from URL", url);
         continue;
       }
 
-      data = await plugin.process(page);
+      const pageContent = await plugin.process(page);
+      console.log(
+        "Plugin",
+        plugin.name,
+        "extracted",
+        pageContent.length,
+        "documents from URL",
+        url
+      );
+      //console.log("Page content:", pageContent);
 
-      if (data) {
+      if (pageContent && pageContent.length > 0) {
         if (plugin.history) {
           const history: InternalHistory = {
             pageUrl: url,
@@ -96,24 +123,32 @@ export class Crawler {
           Object.assign(history, plugin.history);
           plugin.history = history;
         }
-        break;
+        pageContent.forEach((content: any) => {
+          const document = new Document({
+            pageContent: content,
+            metadata: { pluginName: plugin.name },
+          });
+          documents.push(document);
+        });
       }
     }
 
-    if (!data) {
+    if (documents.length === 0) {
       throw new Error("Failed to extract data from the URL.");
     }
 
-    data.url = url;
-    data.timestamp = timestamp;
-
     await browser.close();
 
-    return data as CrawledData;
+    const bot = new GoogleBard(BARD_KEY);
+    const query = `Given the following URL, tell me about each of the sections on this page: ${page.url()}}`;
+    const analysis = await bot.ask(query);
+    console.log("Analysis", analysis);
+
+    return {
+      url,
+      timestamp,
+      analysis,
+      documents,
+    };
   }
 }
-
-/**
- * I am slowly loosing my mind with crawlers, so I have decided to write this class to just cover all the damn cases at this point.
- * If I can figure out how to make it work in a generic way, I will make it a package.
- */

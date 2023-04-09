@@ -1,4 +1,5 @@
 import type { Page } from "puppeteer";
+import { Document } from "langchain/document";
 
 /**
  * A history object that can be used by plugins to keep track of what page was visited,
@@ -33,10 +34,10 @@ export interface Plugin {
    * A function that extracts data from a web page using Puppeteer.
    *
    * @param page - The Puppeteer Page object representing the web page to extract data from.
-   * @returns A promise that resolves to a plain JavaScript object containing the extracted data.
-   *          If no data could be extracted, the promise should resolve to undefined.
+   * @returns A promise that resolves to an array of Document objects containing the extracted data.
+   *          If no data could be extracted, the promise should resolve to an empty array.
    */
-  process(page: Page): Promise<Record<string, any> | undefined>;
+  process(page: Page): Promise<Document[]>;
 
   /**
    * An optional history object that can be used by the plugin to keep track of what page was visited,
