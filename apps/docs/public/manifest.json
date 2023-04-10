@@ -4,9 +4,9 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "Airbnb.com",
-  "short_name": "Airbnb.com",
-  "description": "Book Top Rated Rentals for Your Next Trip - Houses, Cabins, Condos, Unique Stays & More. AirCover - The Most Comprehensive Free Protection in Travel. Best Prices. 100,000 Cities.",
+  "name": "Clippy.com",
+  "short_name": "Clippy.com",
+  "description": "Plugin containing tools to retrive insightful information from websites.",
   "icons": [
     {
       "src": "/lalilulelo/favicon/192.png",

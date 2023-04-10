@@ -1,14 +1,13 @@
-import { Plugin } from "../..";
 import type { Page } from "puppeteer";
-import { Document } from "langchain/document";
+import { BasePlugin } from "../base";
 
-export class Wikipedia implements Plugin {
+export class Wikipedia extends BasePlugin {
   name: string = "Wikipedia";
   engine?: string;
   baseUrl: string = "https://en.wikipedia.org";
 
-  async process(page: Page): Promise<Document[]> {
-    const data = await page.evaluate(
+  async extractData(page: Page): Promise<any> {
+    return await page.evaluate(
       (): {
         title: string;
         description: string;
@@ -80,26 +79,5 @@ export class Wikipedia implements Plugin {
         };
       }
     );
-
-    if (!data) {
-      return [];
-    }
-
-    const documents = data.sections.map(
-      (section) =>
-        new Document({
-          pageContent: section.content,
-          metadata: {
-            pluginName: this.name,
-            title: data.title,
-            description: data.description,
-            lastModified: data.lastModified,
-            ogImage: data.ogImage,
-            sectionTitle: section.title,
-          },
-        })
-    );
-
-    return documents;
   }
 }

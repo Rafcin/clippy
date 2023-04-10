@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Clippy",
+  "name_for_model": "clippy",
+  "description_for_human": "Plugin containing tools to retrive insightful information from websites.",
+  "description_for_model": "Plugin containing tools to retrive insightful information from websites. Given a URL, query or both you can retrive context.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3000/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "http://localhost:3000/lalilulelo/images/clippy.png",
+  "contact_email": "rafcin.s@gmail.com",
+  "legal_info_url": "http://www.example.com/legal"
+}

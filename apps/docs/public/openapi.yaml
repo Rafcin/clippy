@@ -1,0 +1,54 @@
+info:
+  title: Analysis API
+  description: A web API that extracts insightful context regarding a URL
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/analysis:
+    post:
+      summary: Extracts insightful context regarding a URL
+      operationId: extractContext
+      requestBody:
+        description: The request body containing the URL and query.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: The URL to extract insightful context from.
+                  example: https://en.wikipedia.org/wiki/Coffee
+                query:
+                  type: string
+                  description: The query to ask about the URL.
+                  example: Tell me about this article and any interesting key points
+              required:
+                - url
+                - query
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: The extracted insightful context regarding the URL.
+        "500":
+          description: An error occurred while processing documents.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
