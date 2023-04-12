@@ -125,8 +125,8 @@ export class Crawler {
         }
         pageContent.forEach((content: any) => {
           const document = new Document({
-            pageContent: content,
-            metadata: { pluginName: plugin.name },
+            pageContent: content.pageContent,
+            metadata: { pluginName: plugin.name, url, timestamp },
           });
           documents.push(document);
         });
@@ -139,15 +139,14 @@ export class Crawler {
 
     await browser.close();
 
-    const bot = new GoogleBard(BARD_KEY);
-    const query = `Given the following URL, tell me about each of the sections on this page: ${page.url()}}`;
-    const analysis = await bot.ask(query);
-    console.log("Analysis", analysis);
+    // const bot = new GoogleBard(BARD_KEY);
+    // const query = `Given the following URL, tell me about each of the sections on this page: ${page.url()}}`;
+    // const analysis = await bot.ask(query);
+    // console.log("Analysis", analysis);
 
     return {
       url,
       timestamp,
-      analysis,
       documents,
     };
   }

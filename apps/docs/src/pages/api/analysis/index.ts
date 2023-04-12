@@ -3,10 +3,64 @@ import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 
 /**
- * @name POST /api/analysis
- * @function
+ * @swagger
+ * components:
+ *   schemas:
+ *     AnalysisRequestBody:
+ *       type: object
+ *       properties:
+ *         url:
+ *           type: string
+ *           description: The URL to analyze. Required.
+ *         query:
+ *           type: string
+ *           description: The query to ask about the URL such as "What is this URL about?" or "Summarize each section of the URL". Required.
+ *   responses:
+ *     AnalysisResponse:
+ *       type: object
+ *       properties:
+ *         result:
+ *           type: string
+ *           description: The analysis of the URL.
+ *     AnalysisErrorResponse:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ *           description: An error message.
  *
- * @description This API endpoint takes a URL and a natural language query and returns an insightful analysis of the content of the URL.
+ * /api/analysis:
+ *   post:
+ *     operationId: analysis
+ *     summary: Get an insightful analysis of a URL
+ *     description: Given a URL and a natural language query, return an insightful analysis of the content of the URL.
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       $ref: '#/components/schemas/AnalysisRequestBody'
+ *     responses:
+ *       200:
+ *         description: The analysis of the URL.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/responses/AnalysisResponse'
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AnalysisErrorResponse'
+ *       405:
+ *         description: Method Not Allowed
+ *       500:
+ *         description: An error occurred while processing documents.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AnalysisErrorResponse'
  *
  * @param {Object} req - The HTTP request object.
  * @param {Object} req.body - The request body containing the URL and query.
@@ -16,8 +70,6 @@ import NextCors from "nextjs-cors";
  * @param {Object} res - The HTTP response object.
  * @param {function} res.status - The method to set the HTTP response status.
  * @param {function} res.json - The method to send the response body as a JSON object.
- *
- * @returns {string} The analysis of the URL.
  *
  * @throws {Error} The BARD_KEY is required but not provided.
  *

@@ -40,7 +40,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "server.js"
+    "server.js",
+    "swagger.js"
   ],
   "exclude": ["node_modules"]
 }

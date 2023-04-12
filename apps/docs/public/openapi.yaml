@@ -1,54 +1,251 @@
+openapi: 3.0.0
 info:
-  title: Analysis API
-  description: A web API that extracts insightful context regarding a URL
+  title: Clippy
   version: 1.0.0
+  description: Clippy is a helpful swiss army knife for your questions.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Raf
+    url: https://www.rafszuminski.com
+    email: rafcin.s@gmail.com
 servers:
   - url: http://localhost:3000
+    description: Development server
 paths:
   /api/analysis:
     post:
-      summary: Extracts insightful context regarding a URL
-      operationId: extractContext
+      operationId: analysis
+      summary: Get an insightful analysis of a URL
+      description: Given a URL and a natural language query, return an insightful
+        analysis of the content of the URL.
+      consumes:
+        - application/json
+      produces:
+        - application/json
       requestBody:
-        description: The request body containing the URL and query.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                url:
-                  type: string
-                  description: The URL to extract insightful context from.
-                  example: https://en.wikipedia.org/wiki/Coffee
-                query:
-                  type: string
-                  description: The query to ask about the URL.
-                  example: Tell me about this article and any interesting key points
-              required:
-                - url
-                - query
+        $ref: "#/components/schemas/AnalysisRequestBody"
       responses:
         "200":
-          description: OK
+          description: The analysis of the URL.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  result:
-                    type: string
-                    description: The extracted insightful context regarding the URL.
+                $ref: "#/components/responses/AnalysisResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisErrorResponse"
+        "405":
+          description: Method Not Allowed
         "500":
           description: An error occurred while processing documents.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/AnalysisErrorResponse"
+  /api/search:
+    post:
+      operationId: search
+      summary: Perform a similarity search on stored documents
+      description: Given a query, this endpoint performs a similarity search on the
+        stored documents. Optionally, it can crawl a URL and store the extracted
+        documents in Supabase before the search.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: The request body containing the URL and query.
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+                description: The URL to crawl and store documents from. Optional.
+              query:
+                type: string
+                description: The query to use for the similarity search. Required.
+      responses:
+        "200":
+          description: The response object containing the results of the similarity search.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SearchResult"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchErrorResponse"
+        "405":
+          description: Method Not Allowed
+        "500":
+          description: An error occurred while processing documents.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchErrorResponse"
+  /api/stocks:
+    get:
+      operationId: stocks
+      summary: Get stock market data from Alpha Vantage.
+      description: Retrieve stock market data by calling a specified function from the
+        Alpha Vantage API. Requires an API key from Alpha Vantage.
+      tags:
+        - Stocks
+      parameters:
+        - in: query
+          name: fnc
+          description: The name of the function to call from the Alpha Vantage API.
+          required: true
+          schema:
+            type: string
+            example: TIME_SERIES_INTRADAY
+        - in: query
+          name: symbol
+          description: The symbol of the stock to retrieve.
+          required: true
+          schema:
+            type: string
+            example: AAPL
+        - in: query
+          name: interval
+          description: The interval of the stock data to retrieve.
+          required: true
+          schema:
+            type: string
+            example: 5min
+        - in: query
+          name: outputsize
+          description: The size of the output data to retrieve.
+          required: false
+          schema:
+            type: string
+            example: compact
+      responses:
+        "200":
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlphaVantageResponse"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+                    example: Invalid symbol or function.
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+                    example: API request limit reached.
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+                    example: Error fetching data from Alpha Vantage API.
 components:
   schemas:
-    Error:
+    AnalysisRequestBody:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL to analyze. Required.
+        query:
+          type: string
+          description: The query to ask about the URL such as "What is this URL about?" or
+            "Summarize each section of the URL". Required.
+    SearchResult:
+      type: object
+      properties:
+        pageContent:
+          type: string
+          description: The page content from the crawled page.
+        metadata:
+          type: object
+          properties:
+            url:
+              type: string
+              description: The URL of the crawled page.
+            timestamp:
+              type: string
+              description: The timestamp of the crawl.
+            pluginName:
+              type: string
+              description: The plugin used to crawl the page.
+    SearchErrorResponse:
       type: object
       properties:
         error:
           type: string
+          description: An error message.
+    AlphaVantageResponse:
+      type: object
+      properties:
+        Note:
+          type: string
+        Error Message:
+          type: string
+        "[ key: string ]":
+          type: object
+    RequestBody:
+      type: object
+      properties:
+        fnc:
+          type: string
+          description: The name of the function to call from the Alpha Vantage API.
+          example: TIME_SERIES_INTRADAY
+          required: true
+        options:
+          type: object
+          description: The options to pass to the Alpha Vantage API function.
+          example:
+            symbol: AAPL
+            interval: 15min
+          required: true
+  responses:
+    AnalysisResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The analysis of the URL.
+    AnalysisErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: An error message.
+tags: []

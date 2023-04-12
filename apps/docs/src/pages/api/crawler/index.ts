@@ -31,8 +31,7 @@ export default async function handler(
     console.log("Query:", query);
     const crawler = new Crawler({ plugins: [new General()] });
     const results = await crawler.getDataFromUrl(url);
-    const analysis = results.analysis;
-    res.status(200).json({ analysis });
+    res.status(200).json({ results });
   } catch (error) {
     console.error("Error while processing documents:", error);
     res
