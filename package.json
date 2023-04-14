@@ -9,10 +9,10 @@
   "scripts": {
     "[----[Build]----]": "",
     "build": "dotenv -- turbo run build --include-dependencies",
-    "docs:build": "dotenv -- turbo run build --filter=@oxygen/docs --include-dependencies",
+    "clippy:build": "dotenv -- turbo run build --filter=@oxygen/clippy --include-dependencies",
     "[----[Dev]----]": "",
     "dev": "dotenv -- turbo run dev --include-dependencies",
-    "docs:dev": "dotenv -- turbo run dev --filter=@oxygen/docs",
+    "clippy:dev": "dotenv -- turbo run dev --filter=@oxygen/clippy",
     "[----[Lint/Format]----]": "",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

@@ -14,61 +14,35 @@ servers:
   - url: http://localhost:3000
     description: Development server
 paths:
-  /api/analysis:
-    post:
-      operationId: analysis
-      summary: Get an insightful analysis of a URL using Google Bard.
-      description: Given a URL and a natural language query, return an insightful
-        analysis of the content of the URL using Google Bard.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      requestBody:
-        $ref: "#/components/schemas/AnalysisRequestBody"
-      responses:
-        "200":
-          description: The analysis of the URL.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/responses/AnalysisResponse"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AnalysisErrorResponse"
-        "405":
-          description: Method Not Allowed
-        "500":
-          description: An error occurred while processing documents.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AnalysisErrorResponse"
   /api/execute-python:
-    post:
+    get:
       operationId: executePython
       summary: Execute Python code and return results if any are returned.
       description: Given Python code, this endpoint executes the code and returns the
         result. Optionally, it can accept an input parameter to pass to the
         Python code.
-      consumes:
-        - application/json
-      produces:
-        - application/json
       parameters:
-        - in: body
-          name: body
-          description: The request body containing the Python code and input.
+        - in: query
+          name: code
+          description: The Python code to execute. The code should be free of comments and
+            formatted as a code input.
           required: true
           schema:
-            $ref: "#/components/schemas/ExecutePythonCodeRequest"
+            type: string
+        - in: query
+          name: input
+          description: The input to pass to the Python code. Optional. Use this query
+            parameter when providing inputs like strings, integers, or JSON
+            objects. If no input is required, use only the "code" query
+            parameter.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: The response object containing the result of the executed Python
-            code.
+            code. If the code produces images, markdown, or other similar
+            outputs, render those outputs as markdown.
           content:
             application/json:
               schema:
@@ -87,51 +61,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExecutePythonCodeErrorResponse"
-  /api/search:
-    post:
-      operationId: search
-      summary: Perform a similarity search on stored documents. If the documents are
-        not stored, crawl a URL and store the documents before performing the
-        search.
-      description: Given a query, this endpoint performs a similarity search on the
-        stored documents. Optionally, it can crawl a URL and store the extracted
-        documents in Supabase before the search.
-      consumes:
-        - application/json
-      produces:
-        - application/json
+  /api/experimental-search:
+    get:
+      operationId: experimentalSearch
+      summary: This API uses a large language model to return insightful results. This
+        model is connected to the web and can provide current info.
+      description: Give this API a query and it will return an insightful result. This
+        model is connected to the web and can provide current info.
       parameters:
-        - in: body
-          name: body
-          description: The request body containing the URL and query.
+        - in: query
+          name: query
+          description: The well written specific query to ask about the URL such as "What
+            is this URL about?" or "Summarize each section of the URL".
           required: true
           schema:
-            type: object
-            properties:
-              url:
-                type: string
-                description: The URL to crawl and store documents from. Optional.
-              query:
-                type: string
-                description: The query to use for the similarity search. Required.
+            type: string
       responses:
         "200":
-          description: The response object containing the results of the similarity search.
+          description: The insightful context for the query.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  results:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/SearchResult"
+                $ref: "#/components/schemas/ExperimentalSearchResponse"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SearchErrorResponse"
+                $ref: "#/components/schemas/ExperimentalSearchErrorResponse"
         "405":
           description: Method Not Allowed
         "500":
@@ -139,7 +96,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SearchErrorResponse"
+                $ref: "#/components/schemas/ExperimentalSearchErrorResponse"
   /api/stocks:
     get:
       operationId: stocks
@@ -213,40 +170,104 @@ paths:
                     type: string
                     description: The error message.
                     example: Error fetching data from Alpha Vantage API.
+  "/api/web-search?similarityQuery={similarityQuery}&url={url}":
+    get:
+      operationId: webSearch
+      summary: This API takes a query and an optional URL and returns the results of a
+        similarity search on the stored documents. If a URL is provided, it
+        crawls the URL and stores the documents before performing the search.
+      description: Given a string query, this endpoint performs a similarity search on
+        the stored documents. Optionally, it can crawl a URL and store the
+        extracted documents in Supabase before the search.
+      parameters:
+        - in: query
+          name: similarityQuery
+          description: The similarity query to use for the similarity search. Required.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: url
+          description: The URL to crawl and store documents from. Optional.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The response object containing the results of the similarity search.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/WebSearchResult"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebSearchErrorResponse"
+        "405":
+          description: Method Not Allowed
+        "500":
+          description: An error occurred while processing documents.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebSearchErrorResponse"
 components:
   schemas:
-    AnalysisRequestBody:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL to analyze. Required.
-        query:
-          type: string
-          description: The query to ask about the URL such as "What is this URL about?" or
-            "Summarize each section of the URL". Required.
     ExecutePythonCodeRequest:
       type: object
       properties:
         code:
           type: string
-          description: The Python code to execute.
+          description: The Python code to execute. The code should be free of comments and
+            formatted as a code input.
         input:
           type: string
-          description: The input to pass to the Python code. Optional.
+          description: The input to pass to the Python code. Optional. Use this query
+            parameter when providing inputs like strings, integers, or JSON
+            objects. If no input is required, use only the "code" query
+            parameter.
     ExecutePythonCodeResponse:
       type: object
       properties:
         result:
           type: string
-          description: The result of the executed Python code.
+          description: The result of the executed Python code. If the code produces
+            images, markdown, or other similar outputs, render those outputs as
+            markdown.
     ExecutePythonCodeErrorResponse:
       type: object
       properties:
         error:
           type: string
           description: An error message.
-    SearchResult:
+    ExperimentalSearchResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The analysis of the URL.
+    ExperimentalSearchErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: An error message.
+    AlphaVantageResponse:
+      type: object
+      properties:
+        Note:
+          type: string
+        Error Message:
+          type: string
+        "[ key: string ]":
+          type: object
+    WebSearchResult:
       type: object
       properties:
         pageContent:
@@ -264,44 +285,7 @@ components:
             pluginName:
               type: string
               description: The plugin used to crawl the page.
-    SearchErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: An error message.
-    AlphaVantageResponse:
-      type: object
-      properties:
-        Note:
-          type: string
-        Error Message:
-          type: string
-        "[ key: string ]":
-          type: object
-    RequestBody:
-      type: object
-      properties:
-        fnc:
-          type: string
-          description: The name of the function to call from the Alpha Vantage API.
-          example: TIME_SERIES_INTRADAY
-          required: true
-        options:
-          type: object
-          description: The options to pass to the Alpha Vantage API function.
-          example:
-            symbol: AAPL
-            interval: 15min
-          required: true
-  responses:
-    AnalysisResponse:
-      type: object
-      properties:
-        result:
-          type: string
-          description: The analysis of the URL.
-    AnalysisErrorResponse:
+    WebSearchErrorResponse:
       type: object
       properties:
         error:

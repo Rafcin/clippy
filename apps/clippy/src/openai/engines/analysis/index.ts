@@ -16,9 +16,9 @@ export class Analysis {
     }
   }
 
-  async getAnalysis(url: string, query: string): Promise<string> {
+  async getAnalysis(query: string): Promise<string> {
     const bot = new GoogleBard(this.bardKey);
-    const analysis = await bot.ask(`Given the URL ${url}, ${query}`);
+    const analysis = await bot.ask(query);
     console.log("Analysis", analysis);
     return analysis;
   }

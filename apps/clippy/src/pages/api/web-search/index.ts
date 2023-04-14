@@ -6,7 +6,7 @@ import NextCors from "nextjs-cors";
  * @swagger
  * components:
  *   schemas:
- *     SearchResult:
+ *     WebSearchResult:
  *       type: object
  *       properties:
  *         pageContent:
@@ -24,36 +24,30 @@ import NextCors from "nextjs-cors";
  *             pluginName:
  *               type: string
  *               description: The plugin used to crawl the page.
- *     SearchErrorResponse:
+ *     WebSearchErrorResponse:
  *       type: object
  *       properties:
  *         error:
  *           type: string
  *           description: An error message.
  *
- * /api/search:
- *   post:
- *     operationId: search
- *     summary: Perform a similarity search on stored documents. If the documents are not stored, crawl a URL and store the documents before performing the search.
- *     description: Given a query, this endpoint performs a similarity search on the stored documents. Optionally, it can crawl a URL and store the extracted documents in Supabase before the search.
- *     consumes:
- *       - application/json
- *     produces:
- *       - application/json
+ * /api/web-search?similarityQuery={similarityQuery}&url={url}:
+ *   get:
+ *     operationId: webSearch
+ *     summary: This API takes a query and an optional URL and returns the results of a similarity search on the stored documents. If a URL is provided, it crawls the URL and stores the documents before performing the search.
+ *     description: Given a string query, this endpoint performs a similarity search on the stored documents. Optionally, it can crawl a URL and store the extracted documents in Supabase before the search.
  *     parameters:
- *       - in: body
- *         name: body
- *         description: The request body containing the URL and query.
+ *       - in: query
+ *         name: similarityQuery
+ *         description: The similarity query to use for the similarity search. Required.
  *         required: true
  *         schema:
- *           type: object
- *           properties:
- *             url:
- *               type: string
- *               description: The URL to crawl and store documents from. Optional.
- *             query:
- *               type: string
- *               description: The query to use for the similarity search. Required.
+ *           type: string
+ *       - in: query
+ *         name: url
+ *         description: The URL to crawl and store documents from. Optional.
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The response object containing the results of the similarity search.
@@ -65,13 +59,13 @@ import NextCors from "nextjs-cors";
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/SearchResult'
+ *                     $ref: '#/components/schemas/WebSearchResult'
  *       400:
  *         description: Bad Request
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/SearchErrorResponse'
+ *               $ref: '#/components/schemas/WebSearchErrorResponse'
  *       405:
  *         description: Method Not Allowed
  *       500:
@@ -79,12 +73,11 @@ import NextCors from "nextjs-cors";
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/SearchErrorResponse'
+ *               $ref: '#/components/schemas/WebSearchErrorResponse'
  *
  * @param {Object} req - The HTTP request object.
- * @param {Object} req.body - The request body containing the URL and query.
- * @param {string} [req.body.url] - The URL to crawl and store documents from. Optional.
- * @param {string} req.body.query - The query to use for the similarity search. Required.
+ * @param {string} [req.query.url] - The URL to crawl and store documents from. Optional.
+ * @param {string} req.query.similarityQuery - The query to use for the similarity search. Required.
  *
  * @param {Object} res - The HTTP response object.
  * @param {function} res.status - The method to set the HTTP response status.
@@ -93,11 +86,8 @@ import NextCors from "nextjs-cors";
  * @throws {Error} If an error occurs during the crawl and store process.
  *
  * @example
- * Request Body:
- * {
- *    "url": "https://en.wikipedia.org/wiki/Coffee",
- *    "query": "What are the different types of coffee?"
- * }
+ * Request URL:
+ * /api/search?query=What%20are%20the%20different%20types%20of%20coffee%3F&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCoffee
  * Response Body:
  * {
  *    "results": [
@@ -121,9 +111,9 @@ import NextCors from "nextjs-cors";
  * }
  */
 
-interface RequestBody {
+interface QueryParams {
   url?: string;
-  query: string;
+  similarityQuery: string;
 }
 
 export default async function handler(
@@ -136,28 +126,37 @@ export default async function handler(
     origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
     res.status(405).end("Method Not Allowed");
     return;
   }
 
-  const body: RequestBody = req.body;
+  const { url, similarityQuery }: QueryParams =
+    req.query as unknown as QueryParams;
 
-  if (!body.query) {
+  if (!similarityQuery || typeof similarityQuery !== "string") {
     res.status(400).json({
-      error: 'The "query" field is required in the request body.',
+      error:
+        'The "similarityQuery" query parameter is required and must be a string.',
+    });
+    return;
+  }
+
+  if (url && typeof url !== "string") {
+    res.status(400).json({
+      error: 'The "url" query parameter must be a string.',
     });
     return;
   }
 
   try {
-    const { url, query } = body;
     console.log("URL:", url);
-    console.log("Query:", query);
+    console.log("Similarity Query:", similarityQuery);
 
     const search = new Search({});
-    const results = await search.search(url ?? null, query);
+    const results = await search.search(url ?? null, similarityQuery);
 
     res.status(200).json({ results });
   } catch (error) {

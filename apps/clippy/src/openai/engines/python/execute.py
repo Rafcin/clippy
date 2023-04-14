@@ -17,6 +17,14 @@ def execute_code(code, input_data):
             exec(f'input_data = {input_str}\n' + code, globals())
         else:
             exec(code, globals())
+
+        # Capture the value of the variable `result`
+        result = globals().get('result', None)
+
+        # Print the result
+        if result is not None:
+            print(result)
+
     except ImportError as e:
         missing_dependency = str(e).split()[-1].strip("'")
         install_dependency(missing_dependency)
@@ -27,5 +35,5 @@ def execute_code(code, input_data):
 
 if __name__ == "__main__":
     code = sys.argv[1]
-    input_data = json.loads(sys.stdin.readline().strip()) if not sys.stdin.isatty() else None
+    input_data = json.loads(sys.stdin.readline().strip()) if (not sys.stdin.isatty() and sys.stdin.readline().strip() != "") else None
     execute_code(code, input_data)

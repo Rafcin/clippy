@@ -39,7 +39,7 @@ importers:
       turbo: 1.9.1
       typescript: 5.0.4
 
-  apps/docs:
+  apps/clippy:
     specifiers:
       '@builder.io/partytown': ^0.7.6
       '@emotion/cache': ^11.10.7

@@ -1,8 +1,8 @@
 {
   "version": "0.1.0",
   "private": true,
-  "name": "@oxygen/docs",
-  "description": "The docs monorepo app",
+  "name": "@oxygen/clippy",
+  "description": "The clippy monorepo app",
   "author": {
     "name": "Raf Szuminski",
     "email": "rafcin.s@gmail.com",
@@ -12,7 +12,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "keywords": [
-    "docs"
+    "clippy"
   ],
   "scripts": {
     "[----[Build]----]": "",

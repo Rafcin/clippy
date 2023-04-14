@@ -15,19 +15,6 @@ import NextCors from "nextjs-cors";
  *           type: string
  *         [key: string]:
  *           type: object
- *     RequestBody:
- *       type: object
- *       properties:
- *         fnc:
- *           type: string
- *           description: The name of the function to call from the Alpha Vantage API.
- *           example: TIME_SERIES_INTRADAY
- *           required: true
- *         options:
- *           type: object
- *           description: The options to pass to the Alpha Vantage API function.
- *           example: {"symbol": "AAPL", "interval": "15min"}
- *           required: true
  *
  * /api/stocks:
  *   get:
