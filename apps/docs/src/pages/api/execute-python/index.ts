@@ -31,7 +31,7 @@ import { PythonShell } from "python-shell";
  * /api/execute-python:
  *   post:
  *     operationId: executePython
- *     summary: Execute Python code and return the result
+ *     summary: Execute Python code and return results if any are returned.
  *     description: Given Python code, this endpoint executes the code and returns the result. Optionally, it can accept an input parameter to pass to the Python code.
  *     consumes:
  *       - application/json
@@ -132,11 +132,13 @@ async function executePythonCode(code: any, input: any) {
     }
 
     pyShell.on("message", (message) => {
+      console.log("Python message:", message);
       resolve(message);
     });
 
     pyShell.end((err) => {
       if (err) {
+        console.error("Error executing Python code:", err);
         reject(err);
       }
     });

@@ -32,8 +32,8 @@ import NextCors from "nextjs-cors";
  * /api/analysis:
  *   post:
  *     operationId: analysis
- *     summary: Get an insightful analysis of a URL
- *     description: Given a URL and a natural language query, return an insightful analysis of the content of the URL.
+ *     summary: Get an insightful analysis of a URL using Google Bard.
+ *     description: Given a URL and a natural language query, return an insightful analysis of the content of the URL using Google Bard.
  *     consumes:
  *       - application/json
  *     produces:

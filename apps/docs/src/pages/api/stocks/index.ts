@@ -33,7 +33,7 @@ import NextCors from "nextjs-cors";
  *   get:
  *     operationId: stocks
  *     summary: Get stock market data from Alpha Vantage.
- *     description: Retrieve stock market data by calling a specified function from the Alpha Vantage API. Requires an API key from Alpha Vantage.
+ *     description: Retrieve stock market data by calling a specified function from the Alpha Vantage API.
  *     tags:
  *       - Stocks
  *     parameters:
@@ -52,19 +52,12 @@ import NextCors from "nextjs-cors";
  *           type: string
  *           example: AAPL
  *       - in: query
- *         name: interval
- *         description: The interval of the stock data to retrieve.
- *         required: true
- *         schema:
- *           type: string
- *           example: 5min
- *       - in: query
- *         name: outputsize
- *         description: The size of the output data to retrieve.
+ *         name: datatype
+ *         description: By default, datatype is equal to json. Strings json and csv are accepted with the following specifications - json returns the weekly time series in JSON format, csv returns the time series as a CSV (comma separated value) file.
  *         required: false
  *         schema:
  *           type: string
- *           example: compact
+ *           example: csv
  *     responses:
  *       '200':
  *         description: OK.

@@ -34,7 +34,7 @@ import NextCors from "nextjs-cors";
  * /api/search:
  *   post:
  *     operationId: search
- *     summary: Perform a similarity search on stored documents
+ *     summary: Perform a similarity search on stored documents. If the documents are not stored, crawl a URL and store the documents before performing the search.
  *     description: Given a query, this endpoint performs a similarity search on the stored documents. Optionally, it can crawl a URL and store the extracted documents in Supabase before the search.
  *     consumes:
  *       - application/json

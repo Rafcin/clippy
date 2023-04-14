@@ -17,9 +17,9 @@ paths:
   /api/analysis:
     post:
       operationId: analysis
-      summary: Get an insightful analysis of a URL
+      summary: Get an insightful analysis of a URL using Google Bard.
       description: Given a URL and a natural language query, return an insightful
-        analysis of the content of the URL.
+        analysis of the content of the URL using Google Bard.
       consumes:
         - application/json
       produces:
@@ -50,7 +50,7 @@ paths:
   /api/execute-python:
     post:
       operationId: executePython
-      summary: Execute Python code and return the result
+      summary: Execute Python code and return results if any are returned.
       description: Given Python code, this endpoint executes the code and returns the
         result. Optionally, it can accept an input parameter to pass to the
         Python code.
@@ -90,7 +90,9 @@ paths:
   /api/search:
     post:
       operationId: search
-      summary: Perform a similarity search on stored documents
+      summary: Perform a similarity search on stored documents. If the documents are
+        not stored, crawl a URL and store the documents before performing the
+        search.
       description: Given a query, this endpoint performs a similarity search on the
         stored documents. Optionally, it can crawl a URL and store the extracted
         documents in Supabase before the search.
@@ -143,7 +145,7 @@ paths:
       operationId: stocks
       summary: Get stock market data from Alpha Vantage.
       description: Retrieve stock market data by calling a specified function from the
-        Alpha Vantage API. Requires an API key from Alpha Vantage.
+        Alpha Vantage API.
       tags:
         - Stocks
       parameters:
@@ -162,19 +164,15 @@ paths:
             type: string
             example: AAPL
         - in: query
-          name: interval
-          description: The interval of the stock data to retrieve.
-          required: true
-          schema:
-            type: string
-            example: 5min
-        - in: query
-          name: outputsize
-          description: The size of the output data to retrieve.
+          name: datatype
+          description: By default, datatype is equal to json. Strings json and csv are
+            accepted with the following specifications - json returns the weekly
+            time series in JSON format, csv returns the time series as a CSV
+            (comma separated value) file.
           required: false
           schema:
             type: string
-            example: compact
+            example: csv
       responses:
         "200":
           description: OK.
