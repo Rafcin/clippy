@@ -47,6 +47,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AnalysisErrorResponse"
+  /api/execute-python:
+    post:
+      operationId: executePython
+      summary: Execute Python code and return the result
+      description: Given Python code, this endpoint executes the code and returns the
+        result. Optionally, it can accept an input parameter to pass to the
+        Python code.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: The request body containing the Python code and input.
+          required: true
+          schema:
+            $ref: "#/components/schemas/ExecutePythonCodeRequest"
+      responses:
+        "200":
+          description: The response object containing the result of the executed Python
+            code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutePythonCodeResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutePythonCodeErrorResponse"
+        "405":
+          description: Method Not Allowed
+        "500":
+          description: An error occurred while executing the Python code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutePythonCodeErrorResponse"
   /api/search:
     post:
       operationId: search
@@ -187,6 +227,27 @@ components:
           type: string
           description: The query to ask about the URL such as "What is this URL about?" or
             "Summarize each section of the URL". Required.
+    ExecutePythonCodeRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Python code to execute.
+        input:
+          type: string
+          description: The input to pass to the Python code. Optional.
+    ExecutePythonCodeResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The result of the executed Python code.
+    ExecutePythonCodeErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: An error message.
     SearchResult:
       type: object
       properties:
