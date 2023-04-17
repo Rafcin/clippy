@@ -1,4 +1,4 @@
-import { Search } from "@/openai/engines/search";
+import { Search } from "@oxygen/openai";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 

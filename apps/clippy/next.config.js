@@ -1,16 +1,8 @@
-// @ts-check
-//const { PrismaPlugin } = require('experimental-prisma-webpack-plugin')
-
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
-/**
- * @note(pnpm) pass ENV variable to determine if we should transpile
- *            ./src  == transpile
- *            ./dist != transpile
- */
 
-const transpilePackages = ["@oxygen/design-system"];
+const transpilePackages = ["@oxygen/design-system", "@oxygen/openai"];
 
 const withMDX = require("@next/mdx")({
   extension: /\.mdx?$/,

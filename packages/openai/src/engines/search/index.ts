@@ -1,12 +1,12 @@
 import { Document } from "langchain/document";
 
-import { openaiEmbeddings } from "@/utils/langchain/openai";
-import { supabaseClient } from "@/utils/langchain/supabase";
 import { SupabaseVectorStore } from "langchain/vectorstores";
 import { Crawler } from "../crawler";
 import { General } from "../crawler/plugin/plugins/general";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { SupabaseLibArgs } from "langchain/dist/vectorstores/supabase";
+import { embeddings } from "src/langchain/openai";
+import { supabaseclient } from "src/supabase";
 
 interface SearchOptions {}
 
@@ -31,7 +31,7 @@ export class Search {
   }
 
   async documentExists(pageContent: string): Promise<boolean> {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabaseclient
       .from("documents")
       .select("id")
       .eq("content", pageContent)
@@ -51,19 +51,16 @@ export class Search {
     query: string
   ): Promise<Document[] | string> {
     try {
-      const store = await SupabaseVectorStore.fromExistingIndex(
-        openaiEmbeddings,
-        {
-          client: supabaseClient as SupabaseClient,
-          tableName: "documents",
-          queryName: "match_documents",
-        } as unknown as SupabaseLibArgs
-      );
+      const store = await SupabaseVectorStore.fromExistingIndex(embeddings, {
+        client: supabaseclient as SupabaseClient,
+        tableName: "documents",
+        queryName: "match_documents",
+      } as unknown as SupabaseLibArgs);
 
       if (typeof url === "string" && this.validURL(url)) {
         const data = await this.crawler.getDataFromUrl(url);
 
-        const newDocuments = [];
+        const newDocuments: Document[] = [];
 
         for (const doc of data.documents) {
           const exists = await this.documentExists(doc.pageContent);

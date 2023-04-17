@@ -1,4 +1,4 @@
-import { Analysis } from "@/openai/engines/analysis";
+import { Analysis } from "@oxygen/openai";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 

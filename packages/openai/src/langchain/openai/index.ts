@@ -1,4 +1,3 @@
-import { ChatOpenAI } from "langchain/chat_models";
 import { OpenAIEmbeddings } from "langchain/embeddings";
 import { OpenAI } from "langchain/llms";
 
@@ -10,6 +9,4 @@ export const openai = new OpenAI({
   streaming: true,
 });
 
-export const openaiEmbeddings = new OpenAIEmbeddings();
-
-export const openaiChat = new ChatOpenAI();
+export const embeddings = new OpenAIEmbeddings();
