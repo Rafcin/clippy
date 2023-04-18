@@ -117,7 +117,7 @@ async function executePythonCode(code: any, input: any) {
   return new Promise((resolve, reject) => {
     const options = {
       pythonOptions: ["-u"],
-      scriptPath: "@oxygen/openai/engines/python", // Update this path to point to your script
+      scriptPath: "@oxygen/llm/engines/python", // Update this path to point to your script
       args: [code],
       input: input ? JSON.stringify(input) : null,
     };

@@ -1,4 +1,4 @@
-import { Crawler, General } from "@oxygen/openai";
+import { Crawler, General } from "@oxygen/llm";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 

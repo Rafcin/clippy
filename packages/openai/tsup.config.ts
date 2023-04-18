@@ -1,16 +1,18 @@
 import { defineConfig } from "tsup";
-import pkg from "./package.json";
+import RawPlugin from "esbuild-plugin-raw";
 
-const external = [...Object.keys(pkg.peerDependencies || {})];
 const tsupConfig = defineConfig({
-  entryPoints: ["./src/index.ts"],
-  external,
+  entryPoints: ["./src/**"],
   format: ["cjs", "esm"],
+  outDir: "./dist",
   dts: true,
-  legacyOutput: true,
-  sourcemap: true,
   clean: false,
+  minify: true,
+  silent: false,
+  sourcemap: true,
   splitting: false,
+  treeshake: false,
+  esbuildPlugins: [RawPlugin()],
 });
 
 // eslint-disable-next-line import/no-default-export

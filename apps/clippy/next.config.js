@@ -2,19 +2,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
-const transpilePackages = ["@oxygen/design-system", "@oxygen/openai"];
-
-const withMDX = require("@next/mdx")({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
-    // If you use `MDXProvider`, uncomment the following line.
-    providerImportSource: "@mdx-js/react",
-    // @ts-ignore
-    pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
-  },
-});
+const transpilePackages = ["@oxygen/design-system", "@oxygen/llm"];
 
 const protocol = "https";
 
@@ -54,13 +42,10 @@ const nextConfig = {
     deviceSizes: [743, 744, 1127, 1128, 1440],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     domains: [
-      "44.228.116.190",
       "**.amazonws.com",
       "**.example.com",
       "**.googleapis.com",
-      "**.zorores.com",
       "**.cloudfront.net",
-      "**.thetvdb.com",
     ],
     remotePatterns: [
       {
@@ -68,11 +53,6 @@ const nextConfig = {
         hostname: `**.${
           process.env.NEXT_PUBLIC_SITE ?? process.env.VERCEL_URL ?? ""
         }`,
-      },
-      // @note(remotePattern) Zoro
-      {
-        protocol,
-        hostname: `**.zorores.com`,
       },
       // @note(remotePattern) Google Apis
       {
@@ -109,52 +89,9 @@ const nextConfig = {
         protocol,
         hostname: `**.cloudfront.net`,
       },
-      // @note(remotePattern) TheTVDB
-      {
-        protocol,
-        hostname: `**.thetvdb.com`,
-      },
     ],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 18144000, // 1 month
-  },
-  async headers() {
-    return [
-      {
-        // matching all API routes
-        source: "/api/:path*",
-        headers: [
-          { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-          },
-          {
-            key: "Access-Control-Allow-Headers",
-            value:
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-          },
-        ],
-      },
-      {
-        // matching all Video routes
-        source: "/video/:id*",
-        headers: [
-          { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-          },
-          {
-            key: "Access-Control-Allow-Headers",
-            value:
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-          },
-        ],
-      },
-    ];
   },
   optimizeFonts: true,
   outputFileTracing: true,
@@ -166,18 +103,11 @@ const nextConfig = {
     // @note(typescript) handled outside of next
     ignoreBuildErrors: true,
   },
-  // webpack: (config, { isServer }) => {
-  //   if (isServer) {
-  //     config.plugins = [...config.plugins, new PrismaPlugin()]
-  //   }
-
-  //   return config
-  // },
 };
 
 /**
  * @note
  * Plugins cannot handle their own Configuration at this time.
  */
-const plugins = [withBundleAnalyzer, withMDX];
+const plugins = [withBundleAnalyzer];
 module.exports = plugins.reduce((config, plugin) => plugin(config), nextConfig);

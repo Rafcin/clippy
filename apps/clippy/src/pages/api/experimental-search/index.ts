@@ -1,4 +1,4 @@
-import { Analysis } from "@oxygen/openai";
+import { Analysis } from "@oxygen/llm";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 
