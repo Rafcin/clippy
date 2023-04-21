@@ -2,8 +2,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
-const transpilePackages = ["@oxygen/design-system", "@oxygen/llm"];
-
 const protocol = "https";
 
 /**
@@ -11,29 +9,16 @@ const protocol = "https";
  **/
 const nextConfig = {
   reactStrictMode: true,
-  output: "standalone",
-  basePath: "",
-  cleanDistDir: true,
-  compress: true,
-  // crossOrigin: 'same-origin',
   devIndicators: { buildActivity: true, buildActivityPosition: "bottom-right" },
-  distDir: "./.next",
-  // env,
   eslint: {
     // @note(eslint) handled outside of next
     ignoreDuringBuilds: true,
   },
-  excludeDefaultMomentLocales: true,
-  experimental: {
-    appDir: false,
-    legacyBrowsers: false,
-    //esmExternals: "loose",
-    //outputFileTracingRoot: path.join(__dirname, "../..")
+  typescript: {
+    // @note(typescript) handled outside of next
+    ignoreBuildErrors: true,
   },
-  transpilePackages,
-  httpAgentOptions: {
-    keepAlive: true,
-  },
+  transpilePackages: ["@oxygen/design-system", "@oxygen/llm"],
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
@@ -94,15 +79,8 @@ const nextConfig = {
     minimumCacheTTL: 18144000, // 1 month
   },
   optimizeFonts: true,
-  outputFileTracing: true,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   poweredByHeader: false,
-  productionBrowserSourceMaps: true,
-  swcMinify: true,
-  typescript: {
-    // @note(typescript) handled outside of next
-    ignoreBuildErrors: true,
-  },
 };
 
 /**

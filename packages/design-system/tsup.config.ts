@@ -1,7 +1,6 @@
 import { defineConfig } from "tsup";
-import pkg from "./package.json";
 
-const external = [...Object.keys(pkg.peerDependencies || {})];
+const external = ["react"];
 const tsupConfig = defineConfig({
   entryPoints: ["./src/index.tsx", "./src/styles.ts"],
   format: ["cjs", "esm"],
