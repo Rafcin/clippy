@@ -1,5 +1,4 @@
 import { defineConfig } from "tsup";
-import RawPlugin from "esbuild-plugin-raw";
 
 const tsupConfig = defineConfig({
   entryPoints: ["./src/**"],
@@ -12,7 +11,7 @@ const tsupConfig = defineConfig({
   sourcemap: true,
   splitting: false,
   treeshake: false,
-  esbuildPlugins: [RawPlugin()],
+  shims: true,
 });
 
 // eslint-disable-next-line import/no-default-export
