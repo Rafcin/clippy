@@ -18,7 +18,7 @@ const nextConfig = {
     // @note(typescript) handled outside of next
     ignoreBuildErrors: true,
   },
-  transpilePackages: ["@oxygen/design-system", "@oxygen/llm"],
+  transpilePackages: ["@oxygen/design-system"],
   i18n: {
     locales: ["en"],
     defaultLocale: "en",

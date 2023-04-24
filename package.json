@@ -8,16 +8,15 @@
   ],
   "scripts": {
     "[----[Build]----]": "",
-    "build": "dotenv -- turbo run build --include-dependencies",
-    "clippy:build": "dotenv -- turbo run build --filter=@oxygen/clippy --include-dependencies",
+    "build": "turbo run build",
     "[----[Dev]----]": "",
-    "dev": "dotenv -- turbo run dev --include-dependencies",
-    "clippy:dev": "dotenv -- turbo run dev --filter=@oxygen/clippy",
+    "dev": "tsx watch src/index.ts",
     "[----[Lint/Format]----]": "",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "[----[Clean]----]": "",
     "clean": "turbo run clean && rimraf node_modules pnpm-lock.yaml && pnpm i",
+    "nuke": "rm -r node_modules; for d in **/node_modules; do echo $d; rm -r $d; done",
     "[----[Update]----]": "",
     "update:all": "pnpm recursive exec ncu -u && pnpm recursive install"
   },
@@ -35,7 +34,10 @@
     "rimraf": "^5.0.0",
     "tsup": "^6.7.0",
     "turbo": "^1.9.3",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.53",
+    "tsx": "3.12.6"
   },
   "engines": {
     "node": ">=14.0.0"

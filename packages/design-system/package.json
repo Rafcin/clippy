@@ -19,17 +19,14 @@
     "mui"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    },
-    "./internal": {
-      "import": "./dist/esm/internal.js",
-      "require": "./dist/internal.js"
     },
     "./styles.css": "./dist/styles.css"
   },
