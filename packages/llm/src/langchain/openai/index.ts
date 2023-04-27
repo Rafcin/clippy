@@ -1,5 +1,5 @@
-import { OpenAIEmbeddings } from "langchain/embeddings";
-import { OpenAI } from "langchain/llms";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenAI } from "langchain/llms/openai";
 
 export const openai = new OpenAI({
   streaming: true,

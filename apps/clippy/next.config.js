@@ -85,12 +85,6 @@ const nextConfig = {
   optimizeFonts: true,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   poweredByHeader: false,
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Modify the config
-    config.resolve.preferRelative = true;
-
-    return config;
-  },
 };
 
 /**

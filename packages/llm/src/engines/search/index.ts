@@ -1,9 +1,7 @@
 import { PineconeClient } from "@pinecone-database/pinecone";
+import { VectorOperationsApi } from "@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch";
 import { Document } from "langchain/document";
-import {
-  PineconeLibArgs,
-  PineconeStore,
-} from "langchain/vectorstores/pinecone";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { embeddings } from "../../langchain/openai";
 import { Crawler } from "../crawler";
 import { General } from "../crawler/plugin/plugins/general";
@@ -20,7 +18,6 @@ export class Search {
   private pineconeAPIKey: string;
   private pineconeEnvironmentKey: string;
   private pineconeClient: PineconeClient;
-  private pineconeIndex: PineconeLibArgs;
 
   constructor(options: SearchOptions) {
     this.pineconeIndexKey =
@@ -39,18 +36,7 @@ export class Search {
       throw new Error("Missing Pinecone Environment Key");
     }
     this.pineconeClient = new PineconeClient();
-    this.initPineconeClient();
     this.crawler = new Crawler({ plugins: [new General()] });
-  }
-
-  async initPineconeClient() {
-    await this.pineconeClient.init({
-      apiKey: this.pineconeAPIKey,
-      environment: this.pineconeEnvironmentKey,
-    });
-    this.pineconeIndex = this.pineconeClient.Index(
-      this.pineconeIndexKey
-    ) as unknown as PineconeLibArgs;
   }
 
   validURL(str: string) {
@@ -67,15 +53,31 @@ export class Search {
   }
 
   async documentExists(pageContent: string): Promise<boolean> {
-    const store = await PineconeStore.fromExistingIndex(
-      embeddings,
-      this.pineconeIndex
-    );
-    const results = await store.similaritySearch("pinecone", 1, {
-      pageContent: pageContent,
+    await this.pineconeClient.init({
+      apiKey: this.pineconeAPIKey,
+      environment: this.pineconeEnvironmentKey,
     });
-
-    return Boolean(results && results.length > 0);
+    const pineconeIndex = this.pineconeClient.Index(
+      this.pineconeIndexKey
+    ) as unknown as VectorOperationsApi;
+    if (!pineconeIndex) {
+      console.log(
+        "Pinecone Index not initialized",
+        pineconeIndex,
+        this.pineconeClient
+      );
+      throw new Error("Pinecone Index not initialized");
+    }
+    try {
+      const store = await PineconeStore.fromExistingIndex(embeddings, {
+        pineconeIndex: pineconeIndex,
+      });
+      const results = await store.similaritySearch(pageContent);
+      return Boolean(results && results.length > 0);
+    } catch (error) {
+      console.log("Error in documentExists", error);
+      throw new Error("Error in documentExists");
+    }
   }
 
   async search(
@@ -83,10 +85,24 @@ export class Search {
     query: string
   ): Promise<Document[] | string> {
     try {
-      const store = await PineconeStore.fromExistingIndex(
-        embeddings,
-        this.pineconeIndex
-      );
+      await this.pineconeClient.init({
+        apiKey: this.pineconeAPIKey,
+        environment: this.pineconeEnvironmentKey,
+      });
+      const pineconeIndex = this.pineconeClient.Index(
+        this.pineconeIndexKey
+      ) as unknown as VectorOperationsApi;
+      if (!pineconeIndex) {
+        console.log(
+          "Pinecone Index not initialized",
+          pineconeIndex,
+          this.pineconeClient
+        );
+        throw new Error("Pinecone Index not initialized");
+      }
+      const store = await PineconeStore.fromExistingIndex(embeddings, {
+        pineconeIndex: pineconeIndex,
+      });
 
       if (typeof url === "string" && this.validURL(url)) {
         const data = await this.crawler.getDataFromUrl(url);

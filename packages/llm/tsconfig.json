@@ -1,23 +1,29 @@
 {
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "lib": ["ES2020", "dom", "dom.iterable"],
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "removeComments": true,
+    "target": "ESNext",
+    "lib": ["ESNext", "dom"],
+    "moduleResolution": "node",
     "strict": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "importHelpers": true,
+    "sourceMap": true,
+
+    "declaration": true,
     "esModuleInterop": true,
-    "strictNullChecks": false,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules", "build"],
-  "include": ["./src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

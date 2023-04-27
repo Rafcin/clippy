@@ -9,7 +9,6 @@ const tsupConfig = defineConfig({
   treeshake: true,
   shims: true,
   legacyOutput: false,
-  bundle: true,
   splitting: true,
 });
 
