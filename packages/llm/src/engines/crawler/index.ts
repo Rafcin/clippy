@@ -13,6 +13,10 @@ interface CrawlerOptions {
    * An array of plugins to use with the Crawler.
    */
   plugins?: Plugin[];
+  /**
+   * OpenAI Key
+   */
+  openaiKey?: string;
 }
 
 /**
@@ -45,7 +49,7 @@ interface CrawledData {
  */
 export class Crawler {
   private plugins: Plugin[];
-
+  private openaiKey: string;
   /**
    * Creates a new Crawler instance.
    *
@@ -53,6 +57,10 @@ export class Crawler {
    *                  The `plugins` property can be used to specify an initial set of plugins to use.
    */
   constructor(options: CrawlerOptions = {}) {
+    this.openaiKey = options.openaiKey || process.env.OPENAI_API_KEY || "";
+    if (!this.openaiKey) {
+      throw new Error("Missing OpenAI Credentials");
+    }
     this.plugins = options.plugins || [];
   }
 

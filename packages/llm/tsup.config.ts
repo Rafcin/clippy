@@ -1,17 +1,16 @@
 import { defineConfig } from "tsup";
 
 const tsupConfig = defineConfig({
-  entryPoints: ["./src/index.ts"],
-  format: ["cjs", "esm"],
-  outDir: "./dist",
-  dts: true,
-  clean: false,
-  minify: true,
-  silent: false,
+  entry: ["./src/index.ts"],
+  outDir: "dist",
   sourcemap: true,
-  splitting: false,
-  treeshake: false,
+  dts: true,
+  format: ["esm", "cjs"],
+  treeshake: true,
   shims: true,
+  legacyOutput: false,
+  bundle: true,
+  splitting: true,
 });
 
 // eslint-disable-next-line import/no-default-export

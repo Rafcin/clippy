@@ -1,9 +1,9 @@
-export * from "./langchain/openai";
-export * from "./engines/analysis";
-export * from "./engines/crawler";
-export * from "./engines/crawler/plugin";
-export * from "./engines/crawler/plugin/plugins/base";
-export * from "./engines/crawler/plugin/plugins/general";
-export * from "./engines/crawler/plugin/plugins/wikipedia";
-export * from "./engines/search";
-export * from "./supabase";
+export { openai, embeddings } from "./langchain/openai";
+
+export { Analysis } from "./engines/analysis";
+export { Search } from "./engines/search";
+
+export { Crawler } from "./engines/crawler";
+export { BasePlugin } from "./engines/crawler/plugin/plugins/base";
+export { General } from "./engines/crawler/plugin/plugins/general";
+export { Wikipedia } from "./engines/crawler/plugin/plugins/wikipedia";

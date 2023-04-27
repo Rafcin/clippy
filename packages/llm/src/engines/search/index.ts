@@ -1,20 +1,56 @@
+import { PineconeClient } from "@pinecone-database/pinecone";
 import { Document } from "langchain/document";
-
-import { SupabaseVectorStore } from "langchain/vectorstores";
+import {
+  PineconeLibArgs,
+  PineconeStore,
+} from "langchain/vectorstores/pinecone";
+import { embeddings } from "../../langchain/openai";
 import { Crawler } from "../crawler";
 import { General } from "../crawler/plugin/plugins/general";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { SupabaseLibArgs } from "langchain/dist/vectorstores/supabase";
-import { embeddings } from "src/langchain/openai";
-import { supabaseclient } from "src/supabase";
 
-interface SearchOptions {}
+interface SearchOptions {
+  pineconeIndexKey?: string;
+  pineconeAPIKey?: string;
+  pineconeEnvironmentKey?: string;
+}
 
 export class Search {
   private crawler: Crawler;
+  private pineconeIndexKey: string;
+  private pineconeAPIKey: string;
+  private pineconeEnvironmentKey: string;
+  private pineconeClient: PineconeClient;
+  private pineconeIndex: PineconeLibArgs;
 
   constructor(options: SearchOptions) {
+    this.pineconeIndexKey =
+      options.pineconeIndexKey || process.env.PINECONE_INDEX || "";
+    if (!this.pineconeIndexKey) {
+      throw new Error("Missing Pinecone Index Key");
+    }
+    this.pineconeAPIKey =
+      options.pineconeAPIKey || process.env.PINECONE_API_KEY || "";
+    if (!this.pineconeAPIKey) {
+      throw new Error("Missing Pinecone API Key");
+    }
+    this.pineconeEnvironmentKey =
+      options.pineconeEnvironmentKey || process.env.PINECONE_ENVIRONMENT || "";
+    if (!this.pineconeEnvironmentKey) {
+      throw new Error("Missing Pinecone Environment Key");
+    }
+    this.pineconeClient = new PineconeClient();
+    this.initPineconeClient();
     this.crawler = new Crawler({ plugins: [new General()] });
+  }
+
+  async initPineconeClient() {
+    await this.pineconeClient.init({
+      apiKey: this.pineconeAPIKey,
+      environment: this.pineconeEnvironmentKey,
+    });
+    this.pineconeIndex = this.pineconeClient.Index(
+      this.pineconeIndexKey
+    ) as unknown as PineconeLibArgs;
   }
 
   validURL(str: string) {
@@ -31,19 +67,15 @@ export class Search {
   }
 
   async documentExists(pageContent: string): Promise<boolean> {
-    const { data, error } = await supabaseclient
-      .from("documents")
-      .select("id")
-      .eq("content", pageContent)
-      .limit(1);
+    const store = await PineconeStore.fromExistingIndex(
+      embeddings,
+      this.pineconeIndex
+    );
+    const results = await store.similaritySearch("pinecone", 1, {
+      pageContent: pageContent,
+    });
 
-    if (error) {
-      console.error("Error checking if document exists:", error);
-      throw error;
-    }
-
-    console.log("Document exists:", data && data.length > 0);
-    return data && data.length > 0;
+    return Boolean(results && results.length > 0);
   }
 
   async search(
@@ -51,11 +83,10 @@ export class Search {
     query: string
   ): Promise<Document[] | string> {
     try {
-      const store = await SupabaseVectorStore.fromExistingIndex(embeddings, {
-        client: supabaseclient as SupabaseClient,
-        tableName: "documents",
-        queryName: "match_documents",
-      } as unknown as SupabaseLibArgs);
+      const store = await PineconeStore.fromExistingIndex(
+        embeddings,
+        this.pineconeIndex
+      );
 
       if (typeof url === "string" && this.validURL(url)) {
         const data = await this.crawler.getDataFromUrl(url);

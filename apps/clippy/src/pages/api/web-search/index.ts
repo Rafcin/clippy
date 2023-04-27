@@ -35,7 +35,7 @@ import NextCors from "nextjs-cors";
  *   get:
  *     operationId: webSearch
  *     summary: This API takes a query and an optional URL and returns the results of a similarity search on the stored documents. If a URL is provided, it crawls the URL and stores the documents before performing the search.
- *     description: Given a string query, this endpoint performs a similarity search on the stored documents. Optionally, it can crawl a URL and store the extracted documents in Supabase before the search.
+ *     description: Given a string query, this endpoint performs a similarity search on the stored documents. Optionally, it can crawl a URL and store the extracted documents in vector database before the search.
  *     parameters:
  *       - in: query
  *         name: similarityQuery

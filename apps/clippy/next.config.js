@@ -18,7 +18,11 @@ const nextConfig = {
     // @note(typescript) handled outside of next
     ignoreBuildErrors: true,
   },
-  transpilePackages: ["@oxygen/design-system"],
+  experimental: {
+    scrollRestoration: true,
+    newNextLinkBehavior: true,
+  },
+  transpilePackages: ["@oxygen/design-system", "@oxygen/llm"],
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
@@ -81,6 +85,12 @@ const nextConfig = {
   optimizeFonts: true,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   poweredByHeader: false,
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Modify the config
+    config.resolve.preferRelative = true;
+
+    return config;
+  },
 };
 
 /**

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 import { PythonShell } from "python-shell";
+import path from "path";
 
 /**
  * @swagger
@@ -117,7 +118,7 @@ async function executePythonCode(code: any, input: any) {
   return new Promise((resolve, reject) => {
     const options = {
       pythonOptions: ["-u"],
-      scriptPath: "@oxygen/llm/engines/python", // Update this path to point to your script
+      scriptPath: "src/python", // Update this path to point to your script
       args: [code],
       input: input ? JSON.stringify(input) : null,
     };
