@@ -39,7 +39,7 @@ export class Search {
     this.crawler = new Crawler({ plugins: [new General()] });
   }
 
-  validURL(str: string) {
+  isValidUrl(str: string) {
     var pattern = new RegExp(
       "^(https?:\\/\\/)?" + // protocol
         "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
@@ -52,7 +52,8 @@ export class Search {
     return !!pattern.test(str);
   }
 
-  async documentExists(pageContent: string): Promise<boolean> {
+  async checkVectorStoreForDocument(document: Document): Promise<boolean> {
+    //Setup Pinecone Client
     await this.pineconeClient.init({
       apiKey: this.pineconeAPIKey,
       environment: this.pineconeEnvironmentKey,
@@ -62,21 +63,28 @@ export class Search {
     ) as unknown as VectorOperationsApi;
     if (!pineconeIndex) {
       console.log(
-        "Pinecone Index not initialized",
+        "Pinecone Index not initialized in checkVectorStoreForDocument",
         pineconeIndex,
         this.pineconeClient
       );
-      throw new Error("Pinecone Index not initialized");
+      throw new Error(
+        "Pinecone Index not initialized in checkVectorStoreForDocument"
+      );
     }
+    //If all checks passed and Pinecone is setup
     try {
       const store = await PineconeStore.fromExistingIndex(embeddings, {
         pineconeIndex: pineconeIndex,
       });
-      const results = await store.similaritySearch(pageContent);
+      //Search for exact page content plus include exact metadata url
+      const results = await store.similaritySearch(document.pageContent, 1, {
+        url: document.metadata?.url,
+      });
+      //If results are found, return true else false
       return Boolean(results && results.length > 0);
     } catch (error) {
-      console.log("Error in documentExists", error);
-      throw new Error("Error in documentExists");
+      console.log("Error in checkVectorStoreForDocument", error);
+      throw new Error("Error in checkVectorStoreForDocument");
     }
   }
 
@@ -85,6 +93,7 @@ export class Search {
     query: string
   ): Promise<Document[] | string> {
     try {
+      //Setup Pinecone Client
       await this.pineconeClient.init({
         apiKey: this.pineconeAPIKey,
         environment: this.pineconeEnvironmentKey,
@@ -94,43 +103,54 @@ export class Search {
       ) as unknown as VectorOperationsApi;
       if (!pineconeIndex) {
         console.log(
-          "Pinecone Index not initialized",
+          "Pinecone Index not initialized in search",
           pineconeIndex,
           this.pineconeClient
         );
-        throw new Error("Pinecone Index not initialized");
+        throw new Error("Pinecone Index not initialized in search");
       }
       const store = await PineconeStore.fromExistingIndex(embeddings, {
         pineconeIndex: pineconeIndex,
       });
+      if (!store) {
+        console.log(
+          "Pinecone Store not initialized in search",
+          store,
+          this.pineconeClient
+        );
+        throw new Error("Pinecone Store not initialized in search");
+      }
+      //End Setup Pinecone Client
 
-      if (typeof url === "string" && this.validURL(url)) {
-        const data = await this.crawler.getDataFromUrl(url);
-
-        const newDocuments: Document[] = [];
-
-        for (const doc of data.documents) {
-          const exists = await this.documentExists(doc.pageContent);
-          if (!exists) {
-            newDocuments.push(doc);
-            console.log("New document:", doc);
+      //Crawl URL provided and get documents
+      if (url) {
+        if (typeof url === "string" && this.isValidUrl(url)) {
+          const dataFromUrl = await this.crawler.getDataFromUrl(url);
+          const documents: Document[] = [];
+          //For each document, check if it exists in the vector store
+          for (const doc of dataFromUrl.documents) {
+            const exists = await this.checkVectorStoreForDocument(doc);
+            if (!exists) {
+              documents.push(doc);
+              console.log("Added new document:", doc);
+            }
           }
+          //Add new documents to the vector store
+          await store.addDocuments(documents);
+        } else {
+          throw new Error("Could not Crawl URL, please provide a valid URL");
         }
-
-        store.addDocuments(newDocuments);
-        console.log("Added documents:", newDocuments.length);
       }
 
+      //Search the vectorstore for the query
       const results = await store.similaritySearch(query);
-
-      if (results.length === 0 && !url) {
-        return "No results found. Please provide a URL to index.";
+      if (!results || results.length === 0) {
+        return "No results found";
       }
-
       return results;
     } catch (error) {
-      console.error("Error during crawl and store process:", error);
-      throw error;
+      console.log("Error occured in search", error);
+      throw new Error(JSON.stringify(error));
     }
   }
 }

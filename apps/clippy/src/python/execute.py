@@ -35,5 +35,10 @@ def execute_code(code, input_data):
 
 if __name__ == "__main__":
     code = sys.argv[1]
-    input_data = json.loads(sys.stdin.readline().strip()) if (not sys.stdin.isatty() and sys.stdin.readline().strip() != "") else None
+    input_data = None
+    if not sys.stdin.isatty():
+        input_line = sys.stdin.readline().strip()
+        if input_line != "":
+            input_data = json.loads(input_line)
+
     execute_code(code, input_data)

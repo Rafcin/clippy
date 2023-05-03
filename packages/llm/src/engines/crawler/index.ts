@@ -82,7 +82,7 @@ export class Crawler {
    *          If no data could be extracted, the promise will be rejected with an error.
    */
   async getDataFromUrl(url: string): Promise<CrawledData> {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
     await page.goto(url, {

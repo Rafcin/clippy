@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 import { PythonShell } from "python-shell";
-import path from "path";
 
 /**
  * @swagger
@@ -130,16 +129,19 @@ async function executePythonCode(code: any, input: any) {
       pyShell.stdin.end();
     }
 
+    let output = "";
+
     pyShell.on("message", (message) => {
-      console.log("Python message:", message);
-      resolve(message);
+      output += message;
     });
 
-    pyShell.end((err) => {
-      if (err) {
-        console.error("Error executing Python code:", err);
-        reject(err);
-      }
+    pyShell.on("error", (err) => {
+      console.error("Error executing Python code:", err);
+      reject(err);
+    });
+
+    pyShell.on("close", () => {
+      resolve(output);
     });
   });
 }
